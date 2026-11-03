@@ -92,7 +92,7 @@ If no script is found, create a new `.rpi/workspace.json` with the following def
 ```json
 {
   "disabled": false,
-  "pathTemplate": "~/.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
+  "pathTemplate": ".rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
   "branchTemplate": "{{ TASKSLUG }}",
   "repos": [
     {
@@ -116,6 +116,13 @@ If no script is found, create a new `.rpi/workspace.json` with the following def
 If the create_worktree.sh script exists, create a new `.rpi/workspace.json` matching the conventions in the script, including copyGlobs, setupCommand, etc.
 </subcondition>
 
+Read `.gitignore` and add each missing entry:
+
+```bash
+echo '.rpi/workspace.local.json' >> .gitignore
+echo '.rpi/workspaces/' >> .gitignore
+```
+
 Note: For multi-repo setups, add additional entries to `repos[]` with relative paths like `"localPath": "../other-repo"`. The `localPath: "."` entry is required and becomes the primary working directory.
 
 If the user wants more control over the workspace configuration (custom paths, setup commands, multi-repo coordination), they can run `/rpi configure-workspaces` to interactively set it up.
@@ -128,13 +135,17 @@ Create the worktree according to .rpi/workspace.json and .rpi/workspace.local.js
 
 REPOBASENAME is the basename of the repository, e.g. ~/repos/humanlayer -> humanlayer
 
+A relative pathTemplate resolves from the root of the repository that holds `.rpi/workspace.json`, for every repo in `repos[]`.
+
 <loop for="each repo in repos">
   <step index=3.1>
     Create the worktree for the repository
 
     ```bash
-    git worktree add -b {{ branchTemplate(TASKSLUG) }} {{ pathTemplate(TASKSLUG, REPOBASENAME) }} {{ sourceRef }}
+    git -C [REPO_LOCAL_PATH] worktree add -b {{ branchTemplate(TASKSLUG) }} [WORKTREE_FULL_PATH] {{ sourceRef }}
     ```
+
+    `[REPO_LOCAL_PATH]` is the repo's `localPath`. `[WORKTREE_FULL_PATH]` is `{{ pathTemplate(TASKSLUG, REPOBASENAME) }}` as an absolute path, because `git -C` would resolve a relative path from the repo's own directory.
   </step>
   <step index=3.2>
     Copy the files matching the patterns specified in the `copyGlobs` key of `.rpi/workspace.json` (and overridden by `.rpi/workspace.local.json`, if present) from the repository root into the new worktree directory (computed by pathTemplate)

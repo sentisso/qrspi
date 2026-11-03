@@ -65,20 +65,13 @@ Use an existing workspace config as the starting point. Infer changes from the r
 Infer a complete proposal from project files and common defaults.
 
 - Use a single-repository config unless the project clearly coordinates related sibling repositories.
-- For one repository, use `{ "localPath": ".", "primary": true }`.
-- For multiple repositories, include the related paths and mark exactly one primary repository.
-- Prefer the repository with the team's central Claude settings, MCP config, or agent policy as primary.
-- Use `~/.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}` as the default path template.
+- For one repository, use `{ "localPath": "." }`.
+- For multiple repositories, include the related paths.
+- Use `.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}` as the default path template. A relative path template resolves from the selected repository root.
 - Use `origin/main` as the default source ref, or whatever default remote the user prefers (e.g. upstream/main - if there are multiple remotes, ask)
 - Infer a setup command from project scripts, package manager files, the Makefile, and the README.
 - Include local files that exist and are useful in a worktree, such as `.env`, `.env.local`, `.env.development.local`, `.claude/settings.local.json`, and `.rpi/workspace.local.json`.
 - Put machine-specific values in `.rpi/workspace.local.json`.
-
-For multi-repository workspaces:
-
-- Sessions in the workspace launch in the primary repo's worktree by default.
-- Skills and instruction files (`CLAUDE.md`/`AGENTS.md`) are loaded from **all** repos in the workspace.
-- Repo-local `.claude/settings*.json` / MCP-style configuration only governs sessions launched from a repo — so the repo holding the team's central Claude settings, MCP config, or agent policy should usually be primary.
 
 The first response after project inspection must show the proposed `.rpi/workspace.json` as a fenced `json` block. If local overrides are useful, show `.rpi/workspace.local.json` in a second fenced `json` block. End with one short line:
 
@@ -101,7 +94,7 @@ Validate the proposed config before asking for approval.
 ```json
 {
   "disabled": false,
-  "pathTemplate": "~/.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
+  "pathTemplate": ".rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
   "branchTemplate": "{{ TASKSLUG }}",
   "sourceRef": "origin/main",
   "setupCommand": "",
@@ -115,8 +108,7 @@ Validate the proposed config before asking for approval.
   "repos": [
     {
       "localPath": ".",
-      "description": "Selected repository",
-      "primary": true
+      "description": "Selected repository"
     }
   ]
 }
@@ -127,7 +119,7 @@ Validate the proposed config before asking for approval.
 ```json
 {
   "disabled": false,
-  "pathTemplate": "~/.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
+  "pathTemplate": ".rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
   "branchTemplate": "{{ TASKSLUG }}",
   "sourceRef": "origin/main",
   "setupCommand": "bun install",
@@ -139,8 +131,7 @@ Validate the proposed config before asking for approval.
   "repos": [
     {
       "localPath": ".",
-      "description": "Coordination repo",
-      "primary": true
+      "description": "Coordination repo"
     },
     {
       "localPath": "../api",
@@ -157,13 +148,12 @@ Validate the proposed config before asking for approval.
 ```
 
 **Config rules to follow:**
-- Multi-repo configs should mark exactly one repo with `"primary": true` — sessions launch in the primary repo's worktree by default, and its repo-local Claude/MCP configuration governs sessions. If no repo is marked, the task form asks the user to pick one.
 - `localPath: "."` refers to the selected repository itself (the one containing this config); other entries are sibling paths relative to it
 - Template variables are `{{ TASKSLUG }}` and `{{ REPOBASENAME }}` only
 - `copyGlobs` is additive with de-duplication (defaults → workspace.json → workspace.local.json → per-repo), never replaced
-- Repo entries may override `sourceRef`, `setupCommand`, `copyGlobs`, and `primary` — `branchTemplate` is always root-level
+- Repo entries may override `sourceRef`, `setupCommand`, and `copyGlobs` — `branchTemplate` is always root-level
 - `$patch: "delete"` is supported only in `workspace.local.json` repos entries, not in `workspace.json`
-- `disabled: true` at root level disables all workspace setup options
+- `disabled: true` at root level makes `setup-worktree` check out the task branch instead of creating worktrees
 
 **Validate the generated config:**
 
@@ -190,12 +180,11 @@ Write `.rpi/workspace.json`.
 
 If there are local overrides, write `.rpi/workspace.local.json` and ensure it is gitignored.
 
-Read `.gitignore` and check for the workspace.local.json entry.
-
-Add `.rpi/workspace.local.json` to `.gitignore` when needed:
+Read `.gitignore` and check for the `.rpi/workspace.local.json` and `.rpi/workspaces/` entries. Add each missing entry:
 
 ```bash
 echo '.rpi/workspace.local.json' >> .gitignore
+echo '.rpi/workspaces/' >> .gitignore
 ```
 
 </step>
@@ -236,7 +225,7 @@ git status
 
 ### Template variables
 
-Only two template variables are supported in v1:
+Only two template variables are supported:
 - `{{ TASKSLUG }}` — the task slug (e.g. `eng-123-small-fix`)
 - `{{ REPOBASENAME }}` — the basename of each repo's resolved `localPath` (e.g. `humanlayer`, `api`, `web`)
 
@@ -253,14 +242,10 @@ For `repos[]`:
 
 `copyGlobs` at every level uses **additive merge with de-duplication**, never replacement. The effective list is built by concatenating defaults → `workspace.json` → `workspace.local.json` (and, per repo, the root list → the repo's own `copyGlobs`), dropping duplicates while preserving order. Setting `copyGlobs` in a local override or repo entry extends the inherited list — it cannot remove entries from it.
 
-### Primary repo
-
-In a multi-repo workspace, exactly one repo should carry `"primary": true`. The primary repo is the default launch directory for sessions in tasks created from this workspace: skills and instruction files load from all repos, but repo-local `.claude/settings*.json` / MCP configuration follows the launch directory, so the repo holding the team's central agent configuration should be primary. The task creation UI lets users override the primary per task, and prompts for a choice when a multi-repo config marks none. Single-repo configs are implicitly primary.
-
 ### Coordination repos
 
-A coordination repo is a directory that doesn't contain the main project code but instead contains task management files (`.rpi/`, tickets, plans) and references sibling repos through `../api`, `../web`, etc. `localPath: "."` simply refers to the selected repository itself; mark whichever repo should be the default launch/config repo with `"primary": true`.
+A coordination repo is a directory that doesn't contain the main project code but instead contains task management files (`.rpi/`, tickets, plans) and references sibling repos through `../api`, `../web`, etc. `localPath: "."` simply refers to the selected repository itself.
 
 ### disabled field
 
-`disabled: true` at root level prevents workspace setup options that require worktree creation. Users can re-enable it in local overrides without touching shared config.
+`disabled: true` at root level makes `setup-worktree` check out the task branch instead of creating worktrees. Users can re-enable it in local overrides without touching shared config.
