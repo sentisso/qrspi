@@ -12,11 +12,11 @@ Show this chart when asking the user which flow to use:
    │                                   │
    │         ┌─────────────────────────┘
    │         │    ┌──────────────────────┐
-   │         ├───▶│ 1. Design discussion │──────────┐
-   │         │    └──────────────────────┘          │
-   │         │    ┌────────┐    ┌─────┐             │
-   │         └───▶│ 2. PRD │───▶│ TDD │─────────────┤
-   │              └────────┘    └─────┘             ▼
+   │         ├───▶│ 1. Design discussion │────────┐
+   │         │    └──────────────────────┘        │
+   │         │    ┌────────┐    ┌─────┐           │
+   │         └───▶│ 2. PRD │───▶│ TDD │───────────┤
+   │              └────────┘    └─────┘           ▼
    │                                    ┌───────────────────┐
    │                                    │ Structure outline │
    │                                    └─────────┬─────────┘
@@ -36,12 +36,16 @@ Show this chart when asking the user which flow to use:
                                         └───────────────────┘    └────┘
 ```
 
-1. `rpi`: Design discussion settles product and technical choices in one document. It fits a change with a few clear options.
-2. `prd`: PRD followed by TDD separates the user-facing result from the technical approach. It fits a larger feature with open product questions.
-3. `oneshot`: Implementation starts from the ticket, with no research or design. It fits a copy change, a small script, or a bug with a clear cause. Use a planned flow when a wrong design would cause costly code changes.
+The flows:
 
-Briefly recommend a flow based on the request, then ask which they prefer. Use box-drawing glyphs, not Mermaid.
+1. `rpi`: Medium task. Research the codebase, then settle the product and technical choices in one design discussion, then outline and implement. It fits a change where both kinds of choices fit in one document.
+2. `prd`: Large feature. Research, then a PRD for the problem and the user-visible solution, then a TDD for the system and code design. You approve the PRD before the TDD starts. It fits a large feature with open product questions.
+3. `oneshot`: Small and clear. Implement straight from the ticket, with no research or design documents. It fits a change whose behavior and code shape are already clear.
 
-Include this note with the chart and recommendation:
+Recommend the shortest flow that controls the main risk. A change with unclear behavior or code shape needs a planned flow.
 
-> Implementation can start from any workflow step. If you decide that phase's document specifies the task well enough, we can skip the rest of the workflow and get to building. Let me know.
+First print a message with the chart (use box-drawing glyphs, not Mermaid), a brief recommendation based on the request, and this note:
+
+> Implementation can start from any workflow step. If you decide that phase's document specifies the task well enough, we can skip the rest of the workflow and get to building. Just let me know.
+
+Then ask which flow they want. With the available tool for asking the user a multiple-choice question, give one option per flow in the order above, labeled `1. RPI`, `2. PRD-Oriented` and `3. Oneshot`, with the flow's description from the list above as the option description. Add "(Recommended)" to the recommended option's label. Without such a tool, list the three flows with their descriptions after the note and ask in plain text.

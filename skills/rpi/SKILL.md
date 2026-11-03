@@ -17,7 +17,7 @@ Follow the user's requested step. Read `${CLAUDE_SKILL_DIR}/references/workflow.
 
 For a task description with no requested step, ask which flow the user wants: `rpi` (design discussion), `prd` (PRD followed by TDD) or `oneshot` (implementation from the ticket), unless the request names one. Wait for their choice before starting the phase, then carry it into suggested next commands.
 
-When asking the user to choose a flow, read `${CLAUDE_SKILL_DIR}/references/workflow-choice.md` and show its box-and-line chart with the question.
+When asking the user to choose a flow, read `${CLAUDE_SKILL_DIR}/references/workflow-choice.md` and follow it to show the chart and ask the question.
 
 Create writes a new document; iterate updates an existing document in place using the user's feedback or resumes the workflow for a partially finished document.
 
