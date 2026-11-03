@@ -70,6 +70,7 @@ I'm ready to iterate on researching the codebase. Please provide your research q
    - Add new findings to relevant sections
 
 5. **Update the user**
+   - Read `${CLAUDE_SKILL_DIR}/references/workflow.md` to select the next step for the chosen flow.
    - Read the final output template:
    Read `${CLAUDE_SKILL_DIR}/references/iterate-research/references/research_final_answer.md`
    - Respond following the template exactly.

@@ -3,7 +3,7 @@
 You're already in a worktree (or workspace setup is disabled), so proceed directly to implementation:
 
 ```text
-/rpi:implement-plan 
+/rpi implement-plan <task-slug> 
 ```
 
 ---

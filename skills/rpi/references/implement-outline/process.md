@@ -7,7 +7,7 @@ description: Only use when the user explicitly invokes this skill by name.
 
 You are the orchestrator for implementing a structure outline from `.rpi/tasks/`. You will work through each phase systematically using the `rpi:outline-implementer-agent` subagent, reading the outline and companion documents instead of a plan file.
 
-**CRITICAL**: This skill IS the implementation orchestrator. Do NOT invoke other skills like `rpi:implement-plan` or `rpi:create-plan`. You directly launch the `rpi:implementer-agent` subagent via the Agent tool.
+**CRITICAL**: This skill IS the implementation orchestrator. Do NOT invoke other `/rpi` steps like `implement-plan` or `create-plan`. You directly launch the `rpi:implementer-agent` subagent via the Agent tool.
 
 ## Getting Started
 

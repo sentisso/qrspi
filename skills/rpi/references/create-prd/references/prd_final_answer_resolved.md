@@ -4,7 +4,7 @@ The PRD is fleshed out. At this point, we can proceed to the technical design ph
 
 To do this, you can create a new session with the following command:
 ```text
-/rpi:create-tdd
+/rpi create-tdd <task-slug> flow: prd
 ```
 
 Or, if you'd like to go deeper, ask me to keep digging into any part of the solution and we can keep working on it.

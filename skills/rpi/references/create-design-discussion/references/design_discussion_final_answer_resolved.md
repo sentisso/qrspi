@@ -4,7 +4,7 @@ All questions in the design document have been resolved. At this point, we can p
 
 To do this, you can create a new session with the following command:
 ```text
-/rpi:create-structure-outline
+/rpi create-structure-outline <task-slug> flow: <chosen-flow>
 ```
 
 ---

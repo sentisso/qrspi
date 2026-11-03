@@ -10,10 +10,10 @@ The implementation outline has been created. It defines how we will approach the
 You can also ask me to add more detail, code snippets, pseudo-code, or mermaid diagrams.
 
 
-Once you're happy with the approach, you can set up a worktree by creating a new session with the following command: `/rpi:setup-worktree`
+Once you're happy with the approach, you can set up a worktree by creating a new session with the following command: `/rpi setup-worktree <task-slug>`
 
 ```text
-/rpi:setup-worktree
+/rpi setup-worktree <task-slug>
 ```
 
 ---

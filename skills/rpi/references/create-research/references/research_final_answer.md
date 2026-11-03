@@ -7,7 +7,7 @@ If you'd like, you can review the research document for completeness. You can as
 When you're ready to proceed to the design phase, you can create a new session with the following command:
 
 ```text
-/rpi:create-design-discussion
+/rpi <next-step> <task-slug> flow: <chosen-flow>
 ```
 
 ---

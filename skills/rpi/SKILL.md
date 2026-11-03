@@ -11,8 +11,6 @@ Help the user research a change, work through its design, and implement it. Foll
 
 Paths in the phase instructions start with the CLAUDE_SKILL_DIR variable, which is this skill's directory: `${CLAUDE_SKILL_DIR}`. "The task artifact directory from your system prompt", `TASKNAME`, `TASKSLUG`, `<task slug>`, and `ENG-XXXX-description` mean the task directory selected under "Use the Task Directory".
 
-`/rpi:<step>` and "the `rpi:<step>` skill" in the phase instructions and templates mean `/rpi <step> <task-slug>`. Render next commands in that form.
-
 ## Choose the Step
 
 Follow the user's requested step. Read `${CLAUDE_SKILL_DIR}/references/workflow.md` when choosing or explaining a flow or what comes next.
@@ -67,6 +65,20 @@ Write the user's task description verbatim under a heading with the task name:
 
 ## Suggest the Next Step
 
-Use the phase's final-answer template and `${CLAUDE_SKILL_DIR}/references/workflow.md` to choose what comes next. Users run each phase in a separate context window. When suggesting a next command, include the task slug and chosen flow.
+Use the phase's final-answer template and `${CLAUDE_SKILL_DIR}/references/workflow.md` to choose what comes next. Users run each phase in a separate context window. When suggesting a next command, include the task slug and chosen flow. Say it's recommended to run it in a new session.
 
 Use artifact filenames to locate the current phase when asked what's next, then read its document for unfinished work and settled choices. Tell `research-questions` files apart from `research` files. Recognize `prd` or `product-requirements`, `tdd` or `tech-design`, `structure-outline` or `outline`, and `plan`. A structure outline or plan whose phases are not all marked `✅` means implementation is unfinished.
+
+## Use Subagents
+
+Use the bundled agent instructions for `codebase-analyzer`, `codebase-locator`, `codebase-pattern-finder`, `implementation-reviewer`, `implementer-agent`, `outline-implementer-agent`, and `web-search-researcher` as directed by each phase.
+
+<important if="you have a tool for running subagents or delegated sessions, but the named subagents are not available">
+  read the subagent instructions from `${CLAUDE_SKILL_DIR}/references/agents/<agent-name>.md` and pass them into the subagent with your main prompt, with
+<instructions>
+REFERENCE_CONTENTS
+</instructions>
+<message>
+YOUR_MESSAGE ON WHAT TO LOOK FOR OR BUILD
+</message>
+</important>

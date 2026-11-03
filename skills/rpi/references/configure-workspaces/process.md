@@ -217,7 +217,7 @@ Explain the next steps:
 ```
 The workspace configuration is now ready.
 
-When you run `/rpi:setup-worktree`, it will:
+When you run `/rpi setup-worktree <task-slug>`, it will:
 - Create a git worktree for each configured repo at the rendered path
 - Copy the configured files into each worktree
 - Run the setup command in each worktree

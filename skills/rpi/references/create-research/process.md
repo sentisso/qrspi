@@ -109,6 +109,7 @@ Then wait for the user's research query.
    - Create permalinks: `https://github.com/{owner}/{repo}/blob/{commit}/{file}#L{line}`
 
 9. **Respond to the user according to the template**
+   - Read `${CLAUDE_SKILL_DIR}/references/workflow.md` to select the next step for the chosen flow.
    - Read the final output template:
    Read `${CLAUDE_SKILL_DIR}/references/create-research/references/research_final_answer.md`
    - Respond following the template exactly.

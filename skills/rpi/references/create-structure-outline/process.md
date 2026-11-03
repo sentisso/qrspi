@@ -122,6 +122,8 @@ Read `${CLAUDE_SKILL_DIR}/references/create-structure-outline/references/structu
 
 Never suggest setting up a worktree when you are already in one.
 
+In the `plan` flow, suggest `/rpi create-plan <task-slug> flow: plan` instead of the template's command.
+
 5. Respond following the template exactly. Do not include a summary or other information.
 
 ## Work with the user to iterate on the design

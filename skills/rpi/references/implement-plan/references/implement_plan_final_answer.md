@@ -12,7 +12,7 @@
 To create a PR, create a new session with the following command:
 
 ```text
-/rpi:describe-pr
+/rpi describe-pr <task-slug>
 ```
 
 ---

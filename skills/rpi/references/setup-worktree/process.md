@@ -30,7 +30,7 @@ Workspace setup is disabled for this project (via `.rpi/workspace.json` or `.rpi
 I've checked out branch `[BRANCHNAME]` for you. To start implementation, create a new session with the following command:
 
 ```text
-/rpi:implement-outline
+/rpi implement-outline <task-slug>
 ```
 
 If you really do want to create a worktree anyway, let me know and I can still help with that.
@@ -58,7 +58,7 @@ You're already in a worktree at `[current directory]`.
 To start implementation, create a new session with the following command:
 
 ```text
-/rpi:implement-outline
+/rpi implement-outline <task-slug>
 ```
 
 If you really do want to create a new worktree from here, let me know and I can still help with that.
@@ -116,7 +116,7 @@ If the create_worktree.sh script exists, create a new `.rpi/workspace.json` matc
 
 Note: For multi-repo setups, add additional entries to `repos[]` with relative paths like `"localPath": "../other-repo"`. The `localPath: "."` entry is required and becomes the primary working directory.
 
-If the user wants more control over the workspace configuration (custom paths, setup commands, multi-repo coordination), they can use the `rpi:configure-workspaces` skill to interactively set it up.
+If the user wants more control over the workspace configuration (custom paths, setup commands, multi-repo coordination), they can run `/rpi configure-workspaces` to interactively set it up.
 
 </step>
 
@@ -175,7 +175,7 @@ If you encountered an error in Step 3, do NOT output this section.
 Worktree for {{ TASKSLUG }} has been configured. You can start implementation by running
 
 ```text
-use the rpi:implement-outline skill for task .rpi/tasks/{{ TASKSLUG }}
+/rpi implement-outline {{ TASKSLUG }}
 ```
 
 in the [WORKTREE_FULL_PATH] directory

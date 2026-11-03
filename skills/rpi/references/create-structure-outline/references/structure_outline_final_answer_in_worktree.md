@@ -13,7 +13,7 @@ You can also ask me to add more detail, code snippets, pseudo-code, or mermaid d
 You're already in a worktree (or workspace setup is disabled), so once you're happy with the approach we can go straight to implementation:
 
 ```text
-/rpi:implement-outline
+/rpi implement-outline <task-slug>
 ```
 
 ---

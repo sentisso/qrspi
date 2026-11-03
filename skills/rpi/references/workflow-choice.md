@@ -35,4 +35,4 @@ Briefly recommend a flow based on the request, then ask which they prefer. Use b
 
 Include this note with the chart and recommendation:
 
-> Implementation can start from any workflow step. If you decide that phase's document specifies the task well enough, just let me know and we can skip the rest of the workflow and get to building.
+> Implementation can start from any workflow step. If you decide that phase's document specifies the task well enough, we can skip the rest of the workflow and get to building. Let me know.

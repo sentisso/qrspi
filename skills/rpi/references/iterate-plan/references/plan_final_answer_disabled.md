@@ -5,7 +5,7 @@ Workspace setup is disabled for this project (via `.rpi/workspace.json` or `.rpi
 I've checked out branch `[BRANCHNAME]` for you. To start implementation, create a new session with the command:
 
 ```text
-/rpi:implement-plan
+/rpi implement-plan <task-slug>
 ```
 
 ---
