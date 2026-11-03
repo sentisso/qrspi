@@ -1,5 +1,5 @@
 ---
-name: iterate-tdd
+name: iterate-tech-design
 description: Only use when the user explicitly invokes this skill by name.
 ---
 
@@ -130,7 +130,7 @@ If the user asks to "continue working through questions" or "keep grilling" or s
 </content_guidance>
 
 7. **When the user says they're done or the design is fully fleshed out**, read the final output template:
-   Read `${CLAUDE_SKILL_DIR}/references/iterate-tdd/references/tdd_final_answer_resolved.md`
+   Read `${CLAUDE_SKILL_DIR}/references/iterate-tech-design/references/tdd_final_answer_resolved.md`
    - Respond following the selected template exactly. Do not include a summary or other information.
 
 ## Document Precedence
@@ -176,7 +176,7 @@ Use HTML artifacts when a concept is too complex for Mermaid or plain text, espe
 
 **Creating HTML artifacts:**
 - Write HTML files to `.rpi/tasks/{task-slug}/diagram-{description}.html`
-- Read `${CLAUDE_SKILL_DIR}/references/iterate-tdd/references/artifact_template.html` and follow it - copy its `<style>` block and build your content with its prose elements and utility classes so the artifact matches the template's visual language, not the codebase the TDD is about
+- Read `${CLAUDE_SKILL_DIR}/references/iterate-tech-design/references/artifact_template.html` and follow it - copy its `<style>` block and build your content with its prose elements and utility classes so the artifact matches the template's visual language, not the codebase the TDD is about
 - Keep each artifact focused on the decision at hand
 - Use realistic labels, not lorem ipsum
 

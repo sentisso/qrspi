@@ -29,7 +29,7 @@ Load the matching process from `${CLAUDE_SKILL_DIR}/references/<step>/process.md
 | Research | `create-research` or `iterate-research` |
 | Design discussion | `create-design-discussion` or `iterate-design-discussion` |
 | Product requirements / PRD | `create-prd` or `iterate-prd` |
-| Technical design / TDD | `create-tdd` or `iterate-tdd` |
+| Technical design / TDD | `create-tech-design` or `iterate-tech-design` |
 | Implementation outline | `create-structure-outline` or `iterate-structure-outline` |
 | Detailed plan | `create-plan` or `iterate-plan` |
 | Worktree setup | `setup-worktree` |

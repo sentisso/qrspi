@@ -1,5 +1,5 @@
 ---
-name: create-tdd
+name: create-tech-design
 description: Only use when the user explicitly invokes this skill by name.
 ---
 
@@ -39,7 +39,7 @@ You fully settle and get the user's sign-off on the System Design before you ope
 <instructions>
 - Find the task directory: `ls -La .rpi/tasks/TASKNAME` (use Bash `ls -La` - not Grep/Glob - the directory may be a symlink).
 - Read every relevant file in the task directory **fully** (Read with no limit/offset), excluding research-questions docs.
-- Read the TDD template: read `${CLAUDE_SKILL_DIR}/references/create-tdd/references/tdd_template.md`.
+- Read the TDD template: read `${CLAUDE_SKILL_DIR}/references/create-tech-design/references/tdd_template.md`.
 </instructions>
 
 <guidance>
@@ -152,7 +152,7 @@ When a concept is too complex for Mermaid or plain text - combining data flow, s
 .rpi/tasks/{task-slug}/diagram-{description}.html
 ```
 
-**If you are writing an HTML artifact, read `${CLAUDE_SKILL_DIR}/references/create-tdd/references/artifact_template.html` and follow it.** Copy its `<style>` block and build your content in the body using its prose elements and utility classes (`.card`, `.badge*`, `.stat*`, `.ba`). The artifact must follow the template, not the style of the codebase the TDD is about.
+**If you are writing an HTML artifact, read `${CLAUDE_SKILL_DIR}/references/create-tech-design/references/artifact_template.html` and follow it.** Copy its `<style>` block and build your content in the body using its prose elements and utility classes (`.card`, `.badge*`, `.stat*`, `.ba`). The artifact must follow the template, not the style of the codebase the TDD is about.
 </guidance>
 
 </step>
@@ -260,7 +260,7 @@ on(artifactSave)
 
 ## HTML artifacts for complex concepts
 
-The same HTML-artifact escape hatch from the System Design step applies here - use a focused inline HTML artifact when code shape, data flow, and annotations are clearer together than in plain text. Base any HTML artifact on `${CLAUDE_SKILL_DIR}/references/create-tdd/references/artifact_template.html` so it matches the template's visual language.
+The same HTML-artifact escape hatch from the System Design step applies here - use a focused inline HTML artifact when code shape, data flow, and annotations are clearer together than in plain text. Base any HTML artifact on `${CLAUDE_SKILL_DIR}/references/create-tech-design/references/artifact_template.html` so it matches the template's visual language.
 </guidance>
 
 </step>
@@ -280,7 +280,7 @@ Wait for the user's approval and incorporate any fixes.
 <step index="7" name="wrap-up">
 
 <instructions>
-When both phases are approved, read the final answer template and follow it exactly (it points to the next step - the structure outline): read `${CLAUDE_SKILL_DIR}/references/create-tdd/references/tdd_final_answer_resolved.md`.
+When both phases are approved, read the final answer template and follow it exactly (it points to the next step - the structure outline): read `${CLAUDE_SKILL_DIR}/references/create-tech-design/references/tdd_final_answer_resolved.md`.
 </instructions>
 
 </step>

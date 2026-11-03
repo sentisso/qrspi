@@ -104,6 +104,16 @@ Upstream hands off to the next skill with `/rpi:<step>`. The port has one `rpi` 
 grep -rlE '/rpi:[a-z-]+' skills | xargs -r sed -i -E 's#/rpi:([a-z-]+)#/rpi \1 <task-slug>#g'
 ```
 
+### S7. Rename the `tdd` steps to `tech-design` (scripted)
+
+`create-tdd` and `iterate-tdd` become `create-tech-design` and `iterate-tech-design`, in the step directories and in every reference to them.
+
+```bash
+R=skills/rpi/references
+for s in create iterate; do mv -T $R/$s-tdd $R/$s-tech-design; done
+grep -rlE '\b(create|iterate)-tdd\b' skills | xargs -r sed -i -E 's#\b(create|iterate)-tdd\b#\1-tech-design#g'
+```
+
 ### C1. Check the paths (scripted)
 
 Check that no `{SKILLBASE}` remains and that every `${CLAUDE_SKILL_DIR}` path exists. Both commands print nothing on success:
@@ -156,7 +166,7 @@ Upstream relies on features of the HumanLayer app that a plain agent session doe
 - **describe-pr.** Delete step 5, the HumanLayer session trailer, and renumber the steps after it. Delete the session footer from `pr_description_template.md` and the `[HumanLayer Task]({TASK URL})` link. Delete "capture their cloud URLs".
 - **review-artifact-comments.** Delete the `mcp__humanlayer__` comment tools and every step that fetches, replies to, resolves or deletes comments. The step works from a `<comments>` block the user pastes, and asks for one when it is missing.
 - **configure-workspaces.** The Riptide task creation UI references become `/rpi:setup-worktree`, which reads the workspace files.
-- **App look.** References to "this application", the artifact viewer and the right sidebar in the HTML templates, `create-prd`, `create-tdd`, `iterate-tdd` and `ref_code_slides/guide.md` become references to the template's own visual language.
+- **App look.** References to "this application", the artifact viewer and the right sidebar in the HTML templates, `create-prd`, `create-tech-design`, `iterate-tech-design` and `ref_code_slides/guide.md` become references to the template's own visual language.
 - **Library researcher.** Delete the "humanlayer library researcher tool" bullets and the "library researcher" agent mentions.
 - **Hook context.** In `create-design-discussion` and `iterate-design-discussion`, "If hook context says all design questions have been resolved" becomes "If every design question in the document is resolved".
 

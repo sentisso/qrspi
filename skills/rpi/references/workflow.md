@@ -38,8 +38,8 @@ The user can start at any step. After research or any design step, they can skip
 | `create-research-questions` | `create-research` |
 | `create-research` | `create-design-discussion` (`rpi`, `plan`) or `create-prd` (`prd`) |
 | `create-design-discussion` | `create-structure-outline`, once every design question is resolved |
-| `create-prd` | `create-tdd` |
-| `create-tdd` | `create-structure-outline` |
+| `create-prd` | `create-tech-design` |
+| `create-tech-design` | `create-structure-outline` |
 | `create-structure-outline` | `create-plan` in the `plan` flow, otherwise `setup-worktree` when not in a worktree, otherwise `implement-outline` |
 | `create-plan` | `setup-worktree` when not in a worktree, otherwise `implement-plan` |
 | `setup-worktree` | `implement-outline`, or `implement-plan` in the `plan` flow |
@@ -61,7 +61,7 @@ Use a separate context window for each phase. Save current decisions, user appro
 Feedback updates the document that owns the choice, either in the current session or through a new `/rpi` invocation. If a document needs more work and the session is low on context, start a new session with the matching `iterate-*` step:
 
 ```text
-/rpi iterate-tdd ENG-1478-parent-child-tracking use the existing worker queue
+/rpi iterate-tech-design ENG-1478-parent-child-tracking use the existing worker queue
 ```
 
 When documents conflict, the later one wins: plan > structure outline > TDD > PRD > design discussion > research > ticket. For current behavior, live code wins over every document.
