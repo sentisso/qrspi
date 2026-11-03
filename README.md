@@ -10,7 +10,7 @@ Load the plugin for a session:
 claude --plugin-dir /path/to/qrspi
 ```
 
-Start a task with a description. The skill asks which flow to use, then writes the research questions:
+Start a task with a description. The skill asks which flow to use. It then writes the research questions, or for a small `oneshot` task it offers a worktree or implementation straight from the ticket:
 
 ```text
 /rpi add retry limits to the webhook sender

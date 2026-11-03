@@ -134,6 +134,7 @@ done
 - It maps "the task artifact directory from your system prompt" and the `TASKNAME`/`TASKSLUG` placeholders to the task directory it selects.
 - It writes `.rpi/tasks/<task-slug>/ticket.md` from the user's task description when a task starts, in the `# <name>` plus description format of the HumanLayer task form.
 - It points agents that can't load the plugin's subagents to their instructions in `references/agents/`.
+- It carries the Oneshot launch prompt that the HumanLayer app sends in `getFirstSessionParams` (`apps/riptide-ui/src/lib/auto-advance.ts`): run `implement-plan` without a subagent, implement `ticket.md` because no plan exists, and reproduce its final answer.
 
 `skills/rpi/references/workflow.md` holds the flows, the next-step table, the document precedence and the document layout from HumanLayer's skills and workflows reference. `skills/rpi/references/workflow-choice.md` holds the flow chart shown when a new task starts.
 
@@ -203,7 +204,7 @@ Upstream starts every task with the design-discussion flow, so its handoffs carr
 - The `research_final_answer.md` command becomes `/rpi <next-step> <task-slug> flow: <chosen-flow>`. Step 9 of `create-research` and step 5 of `iterate-research` gain a first bullet: "Read `${CLAUDE_SKILL_DIR}/references/workflow.md` to select the next step for the chosen flow."
 - The `design_discussion_final_answer_resolved.md` command gains `flow: <chosen-flow>`.
 - The `prd_final_answer_resolved.md` and `tdd_final_answer_resolved.md` commands gain `flow: prd`.
-- `setup-worktree` gains, after `## steps to follow`: "When the task directory has a plan (`*-plan-*.md`), suggest `/rpi implement-plan <task-slug>` instead of `/rpi implement-outline <task-slug>` in every final answer below."
+- `setup-worktree` gains, after `## steps to follow`: "When the task directory has a plan (`*-plan-*.md`), suggest `/rpi implement-plan <task-slug>` instead of `/rpi implement-outline <task-slug>` in every final answer below. When the flow is `oneshot`, suggest `/rpi implement-plan <task-slug> flow: oneshot` instead."
 
 Apply each change to both the `create-*` and the `iterate-*` copy.
 

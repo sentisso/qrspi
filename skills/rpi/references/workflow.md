@@ -2,17 +2,19 @@
 
 Research establishes what exists, design settles what should change, and implementation builds the agreed result. Use the shortest path that gives the user useful review points.
 
-## Two Flows
+## Three Flows
 
-Each flow starts with research questions and research:
+`rpi` and `prd` start with research questions and research. `oneshot` starts with implementation:
 
-| Flow | After research | Then |
+| Flow | Research and design | Then |
 | --- | --- | --- |
-| `rpi` (default) | Design discussion | Structure outline, detailed plan (optional), worktree (optional), implement, PR |
-| `prd` | PRD, then TDD | Structure outline, detailed plan (optional), worktree (optional), implement, PR |
+| `rpi` (default) | Research, design discussion | Structure outline, detailed plan (optional), worktree (optional), implement, PR |
+| `prd` | Research, PRD, TDD | Structure outline, detailed plan (optional), worktree (optional), implement, PR |
+| `oneshot` | None | Worktree (optional), implement from `ticket.md`, PR |
 
 - Design discussion combines product and technical choices in one document. It fits a change with a few clear options.
 - PRD followed by TDD separates the user-facing result from the technical approach. It fits a larger feature with open product questions.
+- Oneshot implements the ticket directly. It fits a copy change, a small script, or a bug with a clear cause. Use a planned flow when a wrong design would cause costly code changes.
 - After the structure outline, the user chooses the next step: a detailed plan with code-level steps, a worktree, or implementation.
 
 The user can start at any step. After research or any design step, they can skip ahead to an outline or to implementation when the documents already specify the task well enough.
@@ -35,6 +37,7 @@ The user can start at any step. After research or any design step, they can skip
 
 | After | Next step |
 | --- | --- |
+| Task start | `create-research-questions` (`rpi`, `prd`), or for `oneshot` the user's choice: `setup-worktree` when not in a worktree, or `implement-plan` |
 | `create-research-questions` | `create-research` |
 | `create-research` | `create-design-discussion` (`rpi`) or `create-prd` (`prd`) |
 | `create-design-discussion` | `create-structure-outline`, once every design question is resolved |
@@ -42,7 +45,7 @@ The user can start at any step. After research or any design step, they can skip
 | `create-tech-design` | `create-structure-outline` |
 | `create-structure-outline` | The user's choice: `create-plan`, `setup-worktree` when not in a worktree, or `implement-outline` |
 | `create-plan` | The user's choice: `setup-worktree` when not in a worktree, or `implement-plan` |
-| `setup-worktree` | `implement-outline`, or `implement-plan` when a plan exists |
+| `setup-worktree` | `implement-outline`, or `implement-plan` when a plan exists or the flow is `oneshot` |
 | `implement-outline`, `implement-plan` | `describe-pr` |
 
 An `iterate-*` step leads to the same next step as its `create-*` step.
@@ -79,3 +82,5 @@ Documents are numbered by a zero-padded prefix in creation order:
 ├── mockup-*.html, diagram-*.html           # optional
 └── pr-description.md, pr-walkthrough.html  # written by describe-pr
 ```
+
+A `oneshot` task has only `ticket.md` and the `describe-pr` files.
