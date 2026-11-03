@@ -122,7 +122,7 @@ Validate the proposed config before asking for approval.
   "pathTemplate": ".rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
   "branchTemplate": "{{ TASKSLUG }}",
   "sourceRef": "origin/main",
-  "setupCommand": "bun install",
+  "setupCommand": "pnpm install",
   "copyGlobs": [
     ".env",
     ".env.local",
@@ -136,7 +136,7 @@ Validate the proposed config before asking for approval.
     {
       "localPath": "../api",
       "description": "API service",
-      "setupCommand": "bun install"
+      "setupCommand": "pnpm install"
     },
     {
       "localPath": "../web",
@@ -150,7 +150,7 @@ Validate the proposed config before asking for approval.
 **Config rules to follow:**
 - `localPath: "."` refers to the selected repository itself (the one containing this config); other entries are sibling paths relative to it
 - Template variables are `{{ TASKSLUG }}` and `{{ REPOBASENAME }}` only
-- `copyGlobs` is additive with de-duplication (defaults → workspace.json → workspace.local.json → per-repo), never replaced
+- `copyGlobs` is additive with de-duplication (workspace.json → workspace.local.json → per-repo), never replaced
 - Repo entries may override `sourceRef`, `setupCommand`, and `copyGlobs` — `branchTemplate` is always root-level
 - `$patch: "delete"` is supported only in `workspace.local.json` repos entries, not in `workspace.json`
 - `disabled: true` at root level makes `setup-worktree` check out the task branch instead of creating worktrees

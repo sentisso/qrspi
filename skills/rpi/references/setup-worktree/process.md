@@ -35,8 +35,6 @@ I've checked out branch `[BRANCHNAME]` for you. To start implementation, create 
 /rpi implement-outline <task-slug>
 ```
 
-If you really do want to create a worktree anyway, let me know and I can still help with that.
-
 To re-enable workspace setup, edit the file that sets `disabled: true` and change it to `false`, or add `"disabled": false` to `.rpi/workspace.local.json` to override the shared config.
 </output_example>
 
@@ -82,107 +80,27 @@ If you really do want to create a new worktree from here, let me know and I can 
 </step>
 
 
-<step index=2 only_if="no .rpi/workspace.json or .rpi/workspace.local.json was found">
+<step index=2>
 
-First, read the legacy `scripts/create_worktree.sh` script, if it exists, to see if the user has existing preferences.
-
-<subcondition if="script not exists">
-If no script is found, create a new `.rpi/workspace.json` with the following default content:
-
-```json
-{
-  "disabled": false,
-  "pathTemplate": ".rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
-  "branchTemplate": "{{ TASKSLUG }}",
-  "repos": [
-    {
-      "localPath": ".",
-      "description": "Selected repository",
-      "sourceRef": "HEAD",
-      "setupCommand": "",
-      "copyGlobs": [
-          ".env*",
-          ".claude/settings.local.json",
-          "CLAUDE.local.md",
-          ".rpi/workspace.local.json"
-      ]
-    }
-  ]
-}
-```
-</subcondition>
-
-<subcondition if="script exists">
-If the create_worktree.sh script exists, create a new `.rpi/workspace.json` matching the conventions in the script, including copyGlobs, setupCommand, etc.
-</subcondition>
-
-Read `.gitignore` and add each missing entry:
+Create the worktrees by running the setup script from the repository root:
 
 ```bash
-echo '.rpi/workspace.local.json' >> .gitignore
-echo '.rpi/workspaces/' >> .gitignore
+python3 ${CLAUDE_SKILL_DIR}/scripts/setup_worktree.py TASKSLUG
 ```
 
-Note: For multi-repo setups, add additional entries to `repos[]` with relative paths like `"localPath": "../other-repo"`. The `localPath: "."` entry is required and becomes the primary working directory.
+The script merges `.rpi/workspace.json` with `.rpi/workspace.local.json`, and stops with instructions for the user when the workspace is not configured. For each repo it creates the worktree, copies the `copyGlobs` files and runs the setup command. It links the worktree's `.rpi/tasks` to this checkout's `.rpi/tasks`, so the task documents stay in one place. It prints a `worktree:` line per repo, and its last line `start: <path>` is `[WORKTREE_FULL_PATH]` for the final answer.
 
-If the user wants more control over the workspace configuration (custom paths, setup commands, multi-repo coordination), they can run `/rpi configure-workspaces` to interactively set it up.
+If there are any error messages or failures, report the error to the user and work with the user to complete the setup
+
+don't proceed to step 3 until the worktrees are created and setup is complete
 
 </step>
 
 <step index=3>
 
-Create the worktree according to .rpi/workspace.json and .rpi/workspace.local.json, taking the workspace.local.json as overrides for the workspace.json config.
-
-REPOBASENAME is the basename of the repository, e.g. ~/repos/humanlayer -> humanlayer
-
-A relative pathTemplate resolves from the root of the repository that holds `.rpi/workspace.json`, for every repo in `repos[]`.
-
-<loop for="each repo in repos">
-  <step index=3.1>
-    Create the worktree for the repository
-
-    ```bash
-    git -C [REPO_LOCAL_PATH] worktree add -b {{ branchTemplate(TASKSLUG) }} [WORKTREE_FULL_PATH] {{ sourceRef }}
-    ```
-
-    `[REPO_LOCAL_PATH]` is the repo's `localPath`. `[WORKTREE_FULL_PATH]` is `{{ pathTemplate(TASKSLUG, REPOBASENAME) }}` as an absolute path, because `git -C` would resolve a relative path from the repo's own directory.
-  </step>
-  <step index=3.2>
-    Copy the files matching the patterns specified in the `copyGlobs` key of `.rpi/workspace.json` (and overridden by `.rpi/workspace.local.json`, if present) from the repository root into the new worktree directory (computed by pathTemplate)
-
-    ```bash
-    ls -la [REPO_ROOT]/[glob-pattern]
-    ```
-
-    For each matched file, preserve directory structure when copying:
-
-    ```bash
-    mkdir -p [WORKTREE_FULL_PATH]/[parent-dir]
-    cp [matched-file] [WORKTREE_FULL_PATH]/[same-relative-path]
-    ```
-
-    For example, `.claude/settings.local.json` → `[WORKTREE_FULL_PATH]/.claude/settings.local.json`
-  </step>
-  <step index=3.3>
-   Then run the setup command specified in the `setupCommand` key of `.rpi/workspace.json` (and overridden by `.rpi/workspace.local.json`, if present) in the new worktree directory.
-
-    ```
-    cd [WORKTREE_FULL_PATH] && [setup-command]
-    ```
-  </step>
-</loop>
-
-If there are any error messages or failures, report the error to the user and work with the user to complete the setup
-
-don't proceed to step 4 until the worktrees are created and setup is complete
-
-</step>
-
-<step index=4>
-
 **Only output this if the worktree(s) were successfully created.**
 
-If you encountered an error in Step 3, do NOT output this section.
+If you encountered an error in Step 2, do NOT output this section.
 
 <output_example>
 Worktree for {{ TASKSLUG }} has been configured. You can start implementation by running
