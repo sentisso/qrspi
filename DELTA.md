@@ -10,18 +10,19 @@ Scripted actions are copy, render and rename commands. Manual actions are edits 
 |---|---|
 | Repository | `git@github.com:humanlayer/humanlayer.git` |
 | Commit | `f9bd73534a9fb7099a274f951b698b1297122fd9` (2026-11-02) |
-| Local checkout | `../resources/humanlayer` |
 | Plugin source | `apps/riptide-rpi-claude-plugin/` |
 | Agent source | `apps/riptide-daemon/src/agents/claudecode/bundled-agents.ts` and `agents/*.ts` next to it |
 
-The orchestrator design comes from `https://github.com/humanlayer/skills`, local copy in `../resources/humanlayer-skills`, version 1.0.0. Its files are not synced.
+The orchestrator design comes from `https://github.com/humanlayer/skills` at version 1.0.0. Its files are not synced.
 
 ## Reapplying
 
-Run from this directory after updating the local checkout and the commit in the table above:
+Clone upstream at the commit in the table above and point `UP` at the clone. Run every action from this directory:
 
 ```bash
-UP=../resources/humanlayer
+git clone git@github.com:humanlayer/humanlayer.git /tmp/humanlayer
+git -C /tmp/humanlayer checkout <commit>
+UP=/tmp/humanlayer
 ```
 
 Then run each scripted action and apply each manual action in order.
