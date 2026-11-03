@@ -22,7 +22,7 @@ An implementation plan was implemented and a user has follow-on feedback - it mi
    - find the commit that marks the end of implementation
    - read and understand and commits since then - the content of what changed
    - understand what phases of the plan were already implemented - the user might be giving you feedback in the middle of a plan implementation
-   - **If the user wants to implement an unstarted phase**: use `Agent` tool with `subagent_type: "rpi:implementer-agent"` — don't implement phases inline. Example prompt when no plan exists:
+   - **If the user wants to implement an unstarted phase**: use `Agent` tool with `subagent_type: "rpi:implementer-agent"` when a plan exists, or `subagent_type: "rpi:outline-implementer-agent"` when no plan exists — don't implement phases inline. Example prompt when no plan exists:
      <example_subagent_prompt>
      Implement Phase [N] from the structure outline at [outline path]
      

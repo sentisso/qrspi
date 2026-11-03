@@ -5,6 +5,8 @@ description: Only use when the user explicitly invokes this skill by name.
 
 ## steps to follow
 
+When the task directory has a plan (`*-plan-*.md`), suggest `/rpi implement-plan <task-slug>` instead of `/rpi implement-outline <task-slug>` in every final answer below.
+
 <step index=0>
 
 ### Step 0: Check if worktree setup should be skipped

@@ -170,7 +170,7 @@ Automated testing is always better than manual testing.
 ## Document Precedence
 
 When documents conflict, the most recent document wins:
-**structure outline > design discussion > research > ticket**
+**structure outline > TDD > PRD > design discussion > research > ticket**
 
 The structure outline captures the final phased approach. If the ticket or research
 suggested something different, the structure outline reflects the latest decisions.

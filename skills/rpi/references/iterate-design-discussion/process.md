@@ -80,7 +80,7 @@ Then wait for the user's feedback before proceeding.
 5. **Update the user**
    - Read the final output template:
    Read `${CLAUDE_SKILL_DIR}/references/iterate-design-discussion/references/design_discussion_final_answer.md`
-   - If hook context says all design questions have been resolved, read the resolved template instead:
+   - If every design question in the document is resolved, read the resolved template instead:
    Read `${CLAUDE_SKILL_DIR}/references/iterate-design-discussion/references/design_discussion_final_answer_resolved.md`
    - Respond following the selected template exactly. Do not include a summary or other information.
 

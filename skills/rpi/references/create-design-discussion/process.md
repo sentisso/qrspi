@@ -98,7 +98,7 @@ Read `${CLAUDE_SKILL_DIR}/references/show-me.md`
 
 Read `${CLAUDE_SKILL_DIR}/references/create-design-discussion/references/design_discussion_final_answer.md`
 
-If hook context says all design questions have been resolved, read the resolved template instead:
+If every design question in the document is resolved, read the resolved template instead:
 
 Read `${CLAUDE_SKILL_DIR}/references/create-design-discussion/references/design_discussion_final_answer_resolved.md`
 

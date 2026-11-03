@@ -158,11 +158,12 @@ Upstream relies on features of the HumanLayer app that a plain agent session doe
 - **configure-workspaces.** The Riptide task creation UI references become `/rpi:setup-worktree`, which reads the workspace files.
 - **App look.** References to "this application", the artifact viewer and the right sidebar in the HTML templates, `create-prd`, `create-tdd`, `iterate-tdd` and `ref_code_slides/guide.md` become references to the template's own visual language.
 - **Library researcher.** Delete the "humanlayer library researcher tool" bullets and the "library researcher" agent mentions.
+- **Hook context.** In `create-design-discussion` and `iterate-design-discussion`, "If hook context says all design questions have been resolved" becomes "If every design question in the document is resolved".
 
 This check prints nothing when the rewrite is complete:
 
 ```bash
-grep -rniE 'permalink from|right sidebar|right-side sidebar|button below|auto-advance|riptide|mcp__humanlayer|HUMANLAYER_SESSION|HumanLayer Task|library researcher|artifact viewer|this application|sharing & commenting|cloud url' skills agents
+grep -rniE 'permalink from|right sidebar|right-side sidebar|button below|auto-advance|riptide|mcp__humanlayer|HUMANLAYER_SESSION|HumanLayer Task|library researcher|artifact viewer|this application|sharing & commenting|cloud url|hook context' skills agents
 ```
 
 ### M5. Rewrite skill references as `/rpi` steps (manual)
@@ -185,7 +186,17 @@ Upstream starts every task with the design-discussion flow, so its handoffs carr
 - The `research_questions_final_answer.md` commands become `/rpi create-research <task-slug> flow: <chosen-flow>`.
 - The `research_final_answer.md` command becomes `/rpi <next-step> <task-slug> flow: <chosen-flow>`. Step 9 of `create-research` and step 5 of `iterate-research` gain a first bullet: "Read `${CLAUDE_SKILL_DIR}/references/workflow.md` to select the next step for the chosen flow."
 - The `design_discussion_final_answer_resolved.md` command gains `flow: <chosen-flow>`.
-- The `prd_final_answer_resolved.md` command gains `flow: prd`.
+- The `prd_final_answer_resolved.md` and `tdd_final_answer_resolved.md` commands gain `flow: prd`.
 - `create-structure-outline` and `iterate-structure-outline` gain, after "Never suggest setting up a worktree when you are already in one": "In the `plan` flow, suggest `/rpi create-plan <task-slug> flow: plan` instead of the template's command."
+- `setup-worktree` gains, after `## steps to follow`: "When the task directory has a plan (`*-plan-*.md`), suggest `/rpi implement-plan <task-slug>` instead of `/rpi implement-outline <task-slug>` in every final answer below."
 
 Apply each change to both the `create-*` and the `iterate-*` copy.
+
+### M7. Fix upstream routing bugs (manual)
+
+Upstream has these bugs. Drop each fix once upstream fixes it:
+
+- `create-plan`: the worktree condition `<condition if=" OR git-dir output contains '.git/worktrees/'">` becomes `<condition if="git-dir output contains '.git/worktrees/'">`, as in `iterate-plan`.
+- `implement-outline`: "You directly launch the `rpi:implementer-agent` subagent" becomes "You directly launch the `rpi:outline-implementer-agent` subagent".
+- `iterate-implementation`: the unstarted-phase bullet uses `rpi:implementer-agent` when a plan exists and `rpi:outline-implementer-agent` when no plan exists.
+- `create-structure-outline`: the document precedence becomes **structure outline > TDD > PRD > design discussion > research > ticket**, as in `iterate-structure-outline`.

@@ -57,7 +57,7 @@ git rev-parse --git-dir
 
 2. **Read the appropriate final output template**:
 
-<condition if=" OR git-dir output contains '.git/worktrees/'">
+<condition if="git-dir output contains '.git/worktrees/'">
 
 Read `${CLAUDE_SKILL_DIR}/references/create-plan/references/plan_final_answer_in_worktree.md`
 
