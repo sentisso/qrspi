@@ -10,16 +10,16 @@ You are now in the Design Discussion phase. Based on the research findings and t
 ## Steps to follow after receiving the user's request
 
 1. **Read the files in the task artifact directory and any mentioned files immediately and FULLY**:
-   - `ls -La .humanlayer/tasks/TASKSLUG` to find all related documents in the task directory. Do NOT use the Grep or Glob tools, or `ls -l` as the directory may be a symlink.\
-   - Ticket files (e.g., `.humanlayer/tasks/eng-1234-description/ticket.md` or `task.md`)
-   - Research documents (e.g. `.humanlayer/tasks/eng-1234-description/NN-research-DESCRIPTION.md`)
+   - `ls -La .rpi/tasks/TASKSLUG` to find all related documents in the task directory. Do NOT use the Grep or Glob tools, or `ls -l` as the directory may be a symlink.\
+   - Ticket files (e.g., `.rpi/tasks/eng-1234-description/ticket.md` or `task.md`)
+   - Research documents (e.g. `.rpi/tasks/eng-1234-description/NN-research-DESCRIPTION.md`)
    - **DO NOT read research questions documents** - research questions are inputs to the research phase only.
    - **IMPORTANT**: Use the Read tool WITHOUT limit/offset parameters to read entire files, never read files partially - if a file is mentioned, read it completely
    - do not spawn sub-tasks before reading these files yourself in the main context
 
 2. **Check for related task content**:
-   - if a path in `.humanlayer/tasks/TASKNAME` is mentioned, use Bash(`ls -La .humanlayer/tasks/TASKNAME`)
-   - **IMPORTANT** DO NOT USE search or glob or grep, or `ls -l` (lowercase L), as .humanlayer/tasks may be a symlink and those tools don't traverse symlinks
+   - if a path in `.rpi/tasks/TASKNAME` is mentioned, use `ls -La .rpi/tasks/TASKNAME`
+   - **IMPORTANT** DO NOT USE search or glob or grep, or `ls -l` (lowercase L), as .rpi/tasks may be a symlink and those tools don't traverse symlinks
    - read all relevant files in the task directory to fully understand the work so far, excluding research questions documents
 
 3. **Optional - Spawn parallel sub-tasks for comprehensive research**:
@@ -48,22 +48,22 @@ You are now in the Design Discussion phase. Based on the research findings and t
 
 4. **Read the design discussion template and visual guidance**
 
-`Read({SKILLBASE}/references/design_discussion_template.md)`
+Read `${CLAUDE_SKILL_DIR}/references/create-design-discussion/references/design_discussion_template.md`
 
-`Read({SKILLBASE}/references/show-me.md)`
+Read `${CLAUDE_SKILL_DIR}/references/show-me.md`
 
 - Follow the `show-me` guidance throughout the design discussion.
 - Use the smallest set of visual views needed to make the current state, proposed end state, and key design choices clear.
 - Place each visual next to the short text it supports. Do not add visuals that do not help the user make a design decision.
 
-5. **Write the design discussion** to `.humanlayer/tasks/ENG-XXXX-description/NN-design-discussion-DESCRIPTION.md`
-   - First, check the task directory in your system prompt. If you don't see it, find the task directory: `ls -La .humanlayer/tasks | grep -i "eng-XXXX"`
-   - If the directory doesn't exist, create: `.humanlayer/tasks/ENG-XXXX-description/`
+5. **Write the design discussion** to `.rpi/tasks/ENG-XXXX-description/NN-design-discussion-DESCRIPTION.md`
+   - First, check the task directory in your system prompt. If you don't see it, find the task directory: `ls -La .rpi/tasks | grep -i "eng-XXXX"`
+   - If the directory doesn't exist, create: `.rpi/tasks/ENG-XXXX-description/`
    - Format: `NN-design-discussion-DESCRIPTION.md` where NN is a zero-padded chronological index and DESCRIPTION is a 2-4 word kebab-case slug
    - **Chronological indexing**: `ls` the task directory, find the highest existing NN- prefix, and use the next number. First document = `01-`, second = `02-`, etc.
    - Directory naming:
-     - With ticket: `.humanlayer/tasks/ENG-1478-parent-child-tracking/03-design-discussion-parent-child-tracking.md`
-     - Without ticket: `.humanlayer/tasks/improve-error-handling/03-design-discussion-error-handling.md`
+     - With ticket: `.rpi/tasks/ENG-1478-parent-child-tracking/03-design-discussion-parent-child-tracking.md`
+     - Without ticket: `.rpi/tasks/improve-error-handling/03-design-discussion-error-handling.md`
 
 <content_guidance>
 **Outline High-level product spec** - Current state, desired end state, what we're not doing in terms of user experience or functionality
@@ -96,22 +96,15 @@ You are now in the Design Discussion phase. Based on the research findings and t
 
 6. **Read the final output template**
 
-`Read({SKILLBASE}/references/design_discussion_final_answer.md)`
+Read `${CLAUDE_SKILL_DIR}/references/create-design-discussion/references/design_discussion_final_answer.md`
 
 If hook context says all design questions have been resolved, read the resolved template instead:
 
-`Read({SKILLBASE}/references/design_discussion_final_answer_resolved.md)`
+Read `${CLAUDE_SKILL_DIR}/references/create-design-discussion/references/design_discussion_final_answer_resolved.md`
 
-7. Respond following the selected template exactly. Do not include a summary or other information. Include cloud permalinks if available.
+7. Respond following the selected template exactly. Do not include a summary or other information.
 
 <guidance>
-## Cloud Permalinks
-
-When you write or edit documents in .humanlayer/tasks/, a cloud permalink is automatically provided in the hook response.
-- The permalink appears as `additionalContext` after Write/Edit/MultiEdit/Read operations
-- Use this permalink in your final output for easy navigation
-- Example format: `http(s)://{DOMAIN}/artifacts/{artifactId}`
-
 ## Markdown Formatting
 
 When writing markdown files that contain code blocks showing other markdown (like README examples or SKILL.md templates), use 4 backticks (````) for the outer fence so inner 3-backtick code blocks don't prematurely close it:

@@ -9,7 +9,7 @@
 
 ### Next Steps
 
-To create a PR, use the button below, or create a new session with the following command:
+To create a PR, create a new session with the following command:
 
 ```text
 /rpi:describe-pr
@@ -17,4 +17,4 @@ To create a PR, use the button below, or create a new session with the following
 
 ---
 
-You can view the plan here: [NN-plan-DESCRIPTION.md](cloud permalink from hook)
+You can view the plan here: `.rpi/tasks/<task-slug>/NN-plan-DESCRIPTION.md`

@@ -8,4 +8,4 @@ You're already in a worktree (or workspace setup is disabled), so proceed direct
 
 ---
 
-You can view the full artifact in the right sidebar, or on the web [here](cloud permalink from the hook)
+You can view the full artifact at `<saved-file-path>`.

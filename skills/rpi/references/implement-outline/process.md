@@ -5,7 +5,7 @@ description: Only use when the user explicitly invokes this skill by name.
 
 # Phased Implementation from Structure Outline
 
-You are the orchestrator for implementing a structure outline from `.humanlayer/tasks/`. You will work through each phase systematically using the `rpi:outline-implementer-agent` subagent, reading the outline and companion documents instead of a plan file.
+You are the orchestrator for implementing a structure outline from `.rpi/tasks/`. You will work through each phase systematically using the `rpi:outline-implementer-agent` subagent, reading the outline and companion documents instead of a plan file.
 
 **CRITICAL**: This skill IS the implementation orchestrator. Do NOT invoke other skills like `rpi:implement-plan` or `rpi:create-plan`. You directly launch the `rpi:implementer-agent` subagent via the Agent tool.
 
@@ -13,7 +13,7 @@ You are the orchestrator for implementing a structure outline from `.humanlayer/
 
 When invoked:
 1. Discover documents in the task directory:
-   - Use `Bash(ls -La .humanlayer/tasks/TASKNAME)` — do NOT use Glob or Grep, as the directory may be a symlink
+   - Use `ls -La .rpi/tasks/TASKNAME` — do NOT use Glob or Grep, as the directory may be a symlink
    - note the structure outline: file matching `*-structure-outline.md`
    - note the research document: file matching `*-research.md`
    - note the design discussion: file matching `*-design-discussion.md`
@@ -37,11 +37,11 @@ Use the **Agent tool** with `subagent_type="rpi:outline-implementer-agent"` to i
 
 Example prompt:
 ```
-Implement Phase [N] from the structure outline at .humanlayer/tasks/ENG-XXXX-description/YYYY-MM-DD-structure-outline.md
+Implement Phase [N] from the structure outline at .rpi/tasks/ENG-XXXX-description/YYYY-MM-DD-structure-outline.md
 
 Companion documents (read these for context):
-- Research: .humanlayer/tasks/ENG-XXXX-description/YYYY-MM-DD-research.md
-- Design discussion: .humanlayer/tasks/ENG-XXXX-description/YYYY-MM-DD-design-discussion.md
+- Research: .rpi/tasks/ENG-XXXX-description/YYYY-MM-DD-research.md
+- Design discussion: .rpi/tasks/ENG-XXXX-description/YYYY-MM-DD-design-discussion.md
 
 The outline describes intent and signatures — use your judgment to write the actual implementation.
 Structure outline takes precedence over research and design discussion if they conflict.
@@ -76,7 +76,7 @@ Ask for the human to:
 ### 4. Commit the Changes
 
 - Create a new commit for the changes
-- Remember — the `.humanlayer/tasks/` directory should not be committed, it's a symlink to another repo
+- Remember — the `.rpi/tasks/` directory should not be committed, it's a symlink to another repo
 
 ### 5. Repeat for Next Phase
 
@@ -114,7 +114,7 @@ Unless expressly asked, don't commit or proceed to a next phase until the human 
 
 Workflow checklist:
 
-- [ ] get task directory path and discover documents (use `Bash(ls -La n...)`)
+- [ ] get task directory path and discover documents (use `ls -La n...`)
 - [ ] read the structure outline to understand phases
 - [ ] launch `rpi:outline-implementer-agent` via the **Agent tool** for Phase 1 (do NOT use Skill tool)
 - [ ] report summary and ask the human to perform manual verification
@@ -129,6 +129,6 @@ When ALL phases are complete and verified:
 1. Commit the final changes
 2. Read the final output template:
 
-`Read({SKILLBASE}/references/implement_outline_final_answer.md)`
+Read `${CLAUDE_SKILL_DIR}/references/implement-outline/references/implement_outline_final_answer.md`
 
 3. Respond following the template exactly. Do not include a summary or other information.

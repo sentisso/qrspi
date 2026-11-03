@@ -28,7 +28,7 @@ I'm ready to iterate on researching the codebase. Please provide your research q
    - Don't read any other files in the rpi/ directory for the task, focus on the research document and the provided feedback.
    - **DO NOT read ticket files** - research must stay objective about the current codebase.
    - **If a document path was not provided:**
-         - List the contents of the task's artifact directory from your propmt. Run `ls -La .humanlayer/tasks/<task slug>` to find all related documents in the task directory. Do not use glob or grep, or use `ls -l` or `ls` without `-L` as the directory may be a symlink.
+         - List the contents of the task's artifact directory from your propmt. Run `ls -La .rpi/tasks/<task slug>` to find all related documents in the task directory. Do not use glob or grep, or use `ls -l` or `ls` without `-L` as the directory may be a symlink.
 
 
 2. **Process the feedback**:
@@ -71,8 +71,8 @@ I'm ready to iterate on researching the codebase. Please provide your research q
 
 5. **Update the user**
    - Read the final output template:
-   `Read({SKILLBASE}/references/research_final_answer.md)`
-   - Respond following the template exactly, include cloud permalinks if you have them.
+   Read `${CLAUDE_SKILL_DIR}/references/iterate-research/references/research_final_answer.md`
+   - Respond following the template exactly.
 
 ## Research Guidelines
 
@@ -174,13 +174,6 @@ Pick the views that make each part of the story clearest:
   ```
 
 <guidance>
-## Cloud Permalinks
-
-When you write or edit documents in .humanlayer/tasks/, a cloud permalink is automatically provided in the hook response.
-- The permalink appears as `additionalContext` after Write/Edit/MultiEdit/Read operations
-- Use this permalink in your final output for easy navigation
-- Example format: `http(s)://{DOMAIN}/artifacts/{artifactId}`
-
 ## Markdown Formatting
 
 When writing markdown files that contain code blocks showing other markdown (like README examples or SKILL.md templates), use 4 backticks (````) for the outer fence so inner 3-backtick code blocks don't prematurely close it:
@@ -209,12 +202,12 @@ npm install example
   - ALWAYS wait for all sub-agents to complete before synthesizing (step 4)
   - ALWAYS gather metadata before writing the document (step 5 before step 6)
   - NEVER write the research document with placeholder values
-- **Path handling**: Task-specific research goes in .humanlayer/tasks/
-  - Use `.humanlayer/tasks/ENG-XXXX-description/NN-research-DESCRIPTION.md` for task research
+- **Path handling**: Task-specific research goes in .rpi/tasks/
+  - Use `.rpi/tasks/ENG-XXXX-description/NN-research-DESCRIPTION.md` for task research
 </guidance>
 
 
-Remember, you must respond to the user according to the output template at `{SKILLBASE}/references/research_final_answer.md`
+Remember, you must respond to the user according to the output template at `${CLAUDE_SKILL_DIR}/references/iterate-research/references/research_final_answer.md`
 
 <important if="there are open questions in the research document">
 You should include the following text after the section in the final answer template that says 'If you'd like, you can review the research document for completeness.':

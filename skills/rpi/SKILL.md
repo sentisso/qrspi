@@ -1,0 +1,72 @@
+---
+name: rpi
+description: Only use when the user explicitly invokes this skill by name.
+disable-model-invocation: true
+argument-hint: "[step] [task-slug] [request or feedback]"
+---
+
+# Research, Design, and Implement
+
+Help the user research a change, work through its design, and implement it. Follow their requested step, using the phase instructions below.
+
+Paths in the phase instructions start with the CLAUDE_SKILL_DIR variable, which is this skill's directory: `${CLAUDE_SKILL_DIR}`. "The task artifact directory from your system prompt", `TASKNAME`, `TASKSLUG`, `<task slug>`, and `ENG-XXXX-description` mean the task directory selected under "Use the Task Directory".
+
+`/rpi:<step>` and "the `rpi:<step>` skill" in the phase instructions and templates mean `/rpi <step> <task-slug>`. Render next commands in that form.
+
+## Choose the Step
+
+Follow the user's requested step. Read `${CLAUDE_SKILL_DIR}/references/workflow.md` when choosing or explaining a flow or what comes next.
+
+For a task description with no requested step, start with research questions. Ask which flow the user wants: design discussion, or PRD followed by TDD. Wait for their choice before starting the phase, then carry it into suggested next commands.
+
+When asking the user to choose a flow, read `${CLAUDE_SKILL_DIR}/references/workflow-choice.md` and show its box-and-line chart with the question.
+
+Create writes a new document; iterate updates an existing document in place using the user's feedback or resumes the workflow for a partially finished document.
+
+Load the matching process from `${CLAUDE_SKILL_DIR}/references/<step>/process.md`:
+
+| Request | Step |
+| --- | --- |
+| Research questions | `create-research-questions` or `iterate-research-questions` |
+| Research | `create-research` or `iterate-research` |
+| Design discussion | `create-design-discussion` or `iterate-design-discussion` |
+| Product requirements / PRD | `create-prd` or `iterate-prd` |
+| Technical design / TDD | `create-tdd` or `iterate-tdd` |
+| Implementation outline | `create-structure-outline` or `iterate-structure-outline` |
+| Detailed plan | `create-plan` or `iterate-plan` |
+| Worktree setup | `setup-worktree` |
+| Worktree configuration | `configure-workspaces` |
+| Implement | `implement-outline`, or `implement-plan` when a plan exists |
+| Implementation feedback or fixes | `iterate-implementation` |
+| Pull request | `describe-pr` |
+| Commit | `ci-commit` |
+
+Update an existing document by default; create one when needed or requested. When several match, use the newest and name the chosen file.
+
+## Use the Task Directory
+
+Use the directory supplied by the user.
+
+Otherwise, list `.rpi/tasks/` with `ls -La` and look for task directories whose names and workflow filenames match the request or current task branch. Reuse an obvious match without asking. If a directory looks close but could belong to a different task, or several directories look plausible, ask the user which to use before writing. Read only documents allowed by the selected phase when checking a match.
+
+When no existing directory fits, create `.rpi/tasks/<task-slug>` without asking for approval. Use the ticket ID followed by a 2-4 word kebab-case description when the request names a ticket, such as `ENG-1478-parent-child-tracking`, and a short kebab-case slug from the request otherwise. State the selected path.
+
+If `git check-ignore -q .rpi/tasks` fails, append `/.rpi/tasks/` to `.git/info/exclude`. Do not commit the task directory.
+
+## Write the Ticket
+
+Write `ticket.md` only when the user starts a task with a task description: no requested step, or `create-research-questions`. Keep an existing `ticket.md` or `task.md`. Never write `ticket.md` during research, so the research stays objective about the current codebase.
+
+Write the user's task description verbatim under a heading with the task name:
+
+```markdown
+# <Task name>
+
+<Task description, verbatim>
+```
+
+## Suggest the Next Step
+
+Use the phase's final-answer template and `${CLAUDE_SKILL_DIR}/references/workflow.md` to choose what comes next. Users run each phase in a separate context window. When suggesting a next command, include the task slug and chosen flow.
+
+Use artifact filenames to locate the current phase when asked what's next, then read its document for unfinished work and settled choices. Tell `research-questions` files apart from `research` files. Recognize `prd` or `product-requirements`, `tdd` or `tech-design`, `structure-outline` or `outline`, and `plan`. A structure outline or plan whose phases are not all marked `✅` means implementation is unfinished.

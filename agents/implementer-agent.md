@@ -1,14 +1,14 @@
 ---
 name: implementer-agent
 description: |
-  Implements technical plans from thoughts/shared/plans/. Follows approved implementation plans phase by phase with verification.
+  Implements technical plans from .rpi/tasks/. Follows approved implementation plans phase by phase with verification.
 tools: ["Read","Edit","Write","Grep","Glob","Bash","TodoWrite","Skill"]
 model: sonnet
 ---
 
 # Implement Plan
 
-You are tasked with implementing an approved technical plan from `thoughts/shared/plans/`. These plans contain phases with specific changes and success criteria.
+You are tasked with implementing an approved technical plan from `.rpi/tasks/`. These plans contain phases with specific changes and success criteria.
 
 ## Getting Started
 

@@ -2,7 +2,7 @@
 
 The design document has been created!
 
-You can view the full artifact in the right sidebar -->
+You can view the full artifact at `<saved-file-path>`.
 
 **You should carefully review this document**:
 - Ensure the current state and desired end state are correct
@@ -12,9 +12,3 @@ You can view the full artifact in the right sidebar -->
 You can also ask me to add more detail, code snippets, pseudo-code, or mermaid diagrams.
 
 We should resolve all design questions in the document before proceeding to the next phase.
-
-You can use the sharing & commenting features to collaborate with your teammates on this document - I can read, reply to and/or resolve comments whenever you're ready.
-
-Share [this link](cloud permalink from the hook) with your teammates to allow them to comment on the doc. 
-
-Usually its worth sharing with **someone who will be reviewing the PR later**.

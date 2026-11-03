@@ -9,7 +9,7 @@ You are creating a phased implementation plan based on research findings and des
 
 ## Input
 
-- If only a directory is provided, or a directory is not provided, check the task's artifact directory from your prompt: `ls -La .humanlayer/tasks/<task slug>`. Do NOT use grep or glob or `ls` or `ls -l`, as the directory may be a symlink.
+- If only a directory is provided, or a directory is not provided, check the task's artifact directory from your prompt: `ls -La .rpi/tasks/<task slug>`. Do NOT use grep or glob or `ls` or `ls -l`, as the directory may be a symlink.
 - If not directory is provided, and you do not know the task's artifact directory, you should ask the user what artifacts they would like for you to create the outline from.
 
 ## Steps
@@ -21,7 +21,7 @@ You are creating a phased implementation plan based on research findings and des
    - **DO NOT read research questions documents** - research questions are inputs to the research phase only. Use the completed research document instead.
 
 2. **Check for related task content**:
-   - If a path in `.humanlayer/tasks/TASKNAME` is mentioned, use `ls -La .humanlayer/tasks/TASKNAME`
+   - If a path in `.rpi/tasks/TASKNAME` is mentioned, use `ls -La .rpi/tasks/TASKNAME`
    - Read all files in the task directory except research questions documents
    - Read relevant files mentioned in the task files
 
@@ -36,7 +36,7 @@ You are creating a phased implementation plan based on research findings and des
    Do not run agents in the background - FOREGROUND AGENTS ONLY.
 
 4. **Read the visual guidance, then create a phased implementation plan**:
-   - Before creating the outline, read `{SKILLBASE}/references/show-me.md`
+   - Before creating the outline, read `${CLAUDE_SKILL_DIR}/references/show-me.md`
    - Use the smallest set of visual views needed for each phase instead of a list of files and changes
    - Tell the story of each phase in the order that makes it easiest to understand; show files first when ownership gives the needed context, or establish key data structures, SQL tables, or API contracts first when they explain the rest of the change
    - Treat every visual view and subheading as optional. Choose and order them based on the change rather than a fixed template
@@ -91,38 +91,38 @@ These are intended to be **illustrative**. Not all work lends itself to this typ
 
 1. **Read the structure outline template**
 
-`Read({SKILLBASE}/references/structure_outline_template.md)`
+Read `${CLAUDE_SKILL_DIR}/references/create-structure-outline/references/structure_outline_template.md`
 
-2. **Write the structure outline** to `.humanlayer/tasks/ENG-XXXX-description/NN-structure-outline-DESCRIPTION.md`
-   - First, find the task directory: `ls -La .humanlayer/tasks | grep -i "eng-XXXX"`
-   - If the directory doesn't exist, create: `.humanlayer/tasks/ENG-XXXX-description/`
+2. **Write the structure outline** to `.rpi/tasks/ENG-XXXX-description/NN-structure-outline-DESCRIPTION.md`
+   - First, find the task directory: `ls -La .rpi/tasks | grep -i "eng-XXXX"`
+   - If the directory doesn't exist, create: `.rpi/tasks/ENG-XXXX-description/`
    - Format: `NN-structure-outline-DESCRIPTION.md` where NN is a zero-padded chronological index and DESCRIPTION is a 2-4 word kebab-case slug
    - **Chronological indexing**: `ls -La` the task directory, find the highest existing NN- prefix, and use the next number. First document = `01-`, second = `02-`, etc.
    - Directory naming:
-     - With ticket: `.humanlayer/tasks/ENG-1478-parent-child-tracking/04-structure-outline-parent-child-tracking.md`
-     - Without ticket: `.humanlayer/tasks/improve-error-handling/04-structure-outline-error-handling.md`
+     - With ticket: `.rpi/tasks/ENG-1478-parent-child-tracking/04-structure-outline-parent-child-tracking.md`
+     - Without ticket: `.rpi/tasks/improve-error-handling/04-structure-outline-error-handling.md`
 
 3. **Check whether you are already in a worktree**:
 
-```
-Bash(git rev-parse --git-dir)
+```bash
+git rev-parse --git-dir
 ```
 
 4. **Read the appropriate final output template**:
 
 <condition if="git-dir output contains '.git/worktrees/'">
 
-`Read({SKILLBASE}/references/structure_outline_final_answer_in_worktree.md)`
+Read `${CLAUDE_SKILL_DIR}/references/create-structure-outline/references/structure_outline_final_answer_in_worktree.md`
 
 <else>
 
-`Read({SKILLBASE}/references/structure_outline_final_answer.md)`
+Read `${CLAUDE_SKILL_DIR}/references/create-structure-outline/references/structure_outline_final_answer.md`
 
 </condition>
 
 Never suggest setting up a worktree when you are already in one.
 
-5. Respond following the template exactly. Do not include a summary or other information. Include cloud permalinks if available.
+5. Respond following the template exactly. Do not include a summary or other information.
 
 ## Work with the user to iterate on the design
 
@@ -135,13 +135,6 @@ Never suggest setting up a worktree when you are already in one.
    - Update the structure according to the user's feedback
 
 <guidance>
-## Cloud Permalinks
-
-When you write or edit documents in .humanlayer/tasks/, a cloud permalink is automatically provided in the hook response.
-- The permalink appears as `additionalContext` after Write/Edit/MultiEdit/Read operations
-- Use this permalink in your final output for easy navigation
-- Example format: `http(s)://{DOMAIN}/artifacts/{artifactId}`
-
 ## Markdown Formatting
 
 When writing markdown files that contain code blocks showing other markdown (like README examples or SKILL.md templates), use 4 backticks (````) for the outer fence so inner 3-backtick code blocks don't prematurely close it:

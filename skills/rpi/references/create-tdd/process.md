@@ -30,16 +30,16 @@ You fully settle and get the user's sign-off on the System Design before you ope
 
 **Leverage, not exhaustiveness.** The TDD should let the user decide, align, and re-steer the implementation without loading every detail into their head. Prefer the smallest set of diagrams, signatures, and sketches that reveal the important decisions and tradeoffs.
 
-**Get more context when you need it.** When a decision depends on how the codebase actually works, spawn Agent() calls (codebase-analyzer, codebase-pattern-finder, web-search-researcher, or the library researcher) before presenting options. Fold any new findings back into the research artifact.
+**Get more context when you need it.** When a decision depends on how the codebase actually works, spawn Agent() calls (codebase-analyzer, codebase-pattern-finder, or web-search-researcher) before presenting options. Fold any new findings back into the research artifact.
 
 ---
 
 <step index="1" name="understand-the-context">
 
 <instructions>
-- Find the task directory: `ls -La .humanlayer/tasks/TASKNAME` (use Bash `ls -La` - not Grep/Glob - the directory may be a symlink).
+- Find the task directory: `ls -La .rpi/tasks/TASKNAME` (use Bash `ls -La` - not Grep/Glob - the directory may be a symlink).
 - Read every relevant file in the task directory **fully** (Read with no limit/offset), excluding research-questions docs.
-- Read the TDD template: `Read({SKILLBASE}/references/tdd_template.md)`.
+- Read the TDD template: read `${CLAUDE_SKILL_DIR}/references/create-tdd/references/tdd_template.md`.
 </instructions>
 
 <guidance>
@@ -58,7 +58,7 @@ There is no required upstream artifact. The product context might be a full PRD,
 <step index="2" name="write-the-skeleton">
 
 <instructions>
-Write the doc to `.humanlayer/tasks/ENG-XXXX-description/NN-tdd-DESCRIPTION.md` (next zero-padded `NN-` index in the task dir; `DESCRIPTION` is a 2-4 word kebab-case slug).
+Write the doc to `.rpi/tasks/ENG-XXXX-description/NN-tdd-DESCRIPTION.md` (next zero-padded `NN-` index in the task dir; `DESCRIPTION` is a 2-4 word kebab-case slug).
 
 **Keep the skeleton as minimal as possible. No preamble, no setup, no summaries.** The faster you reach the first question, the more the user stays engaged in building the TDD. Write only:
 - Frontmatter with `type: design-tdd`, plus the top-level title
@@ -146,13 +146,13 @@ If the codebase uses an ORM or a schema-definition library, the equivalent ORM-s
 ## HTML artifacts for complex concepts
 
 When a concept is too complex for Mermaid or plain text - combining data flow, structure, annotations, or side-by-side comparisons - write a focused HTML artifact and display it inline:
-- Write to `.humanlayer/tasks/{task-slug}/diagram-{description}.html`
+- Write to `.rpi/tasks/{task-slug}/diagram-{description}.html`
 - Keep each artifact focused on the decision at hand; use realistic labels, not lorem ipsum
 ```task-artifact
-.humanlayer/tasks/{task-slug}/diagram-{description}.html
+.rpi/tasks/{task-slug}/diagram-{description}.html
 ```
 
-**If you are writing an HTML artifact, read `{SKILLBASE}/references/artifact_template.html` and follow it.** Copy its `<style>` block and build your content in the body using its prose elements and utility classes (`.card`, `.badge*`, `.stat*`, `.ba`). The artifact must follow the template so it matches this application, not the codebase the TDD is about.
+**If you are writing an HTML artifact, read `${CLAUDE_SKILL_DIR}/references/create-tdd/references/artifact_template.html` and follow it.** Copy its `<style>` block and build your content in the body using its prose elements and utility classes (`.card`, `.badge*`, `.stat*`, `.ba`). The artifact must follow the template, not the style of the codebase the TDD is about.
 </guidance>
 
 </step>
@@ -260,7 +260,7 @@ on(artifactSave)
 
 ## HTML artifacts for complex concepts
 
-The same HTML-artifact escape hatch from the System Design step applies here - use a focused inline HTML artifact when code shape, data flow, and annotations are clearer together than in plain text. Base any HTML artifact on `{SKILLBASE}/references/artifact_template.html` so it matches this application's visual language.
+The same HTML-artifact escape hatch from the System Design step applies here - use a focused inline HTML artifact when code shape, data flow, and annotations are clearer together than in plain text. Base any HTML artifact on `${CLAUDE_SKILL_DIR}/references/create-tdd/references/artifact_template.html` so it matches the template's visual language.
 </guidance>
 
 </step>
@@ -280,7 +280,7 @@ Wait for the user's approval and incorporate any fixes.
 <step index="7" name="wrap-up">
 
 <instructions>
-When both phases are approved, read the final answer template and follow it exactly (it points to the next step - the structure outline): `Read({SKILLBASE}/references/tdd_final_answer_resolved.md)`. Include cloud permalinks if available.
+When both phases are approved, read the final answer template and follow it exactly (it points to the next step - the structure outline): read `${CLAUDE_SKILL_DIR}/references/create-tdd/references/tdd_final_answer_resolved.md`.
 </instructions>
 
 </step>

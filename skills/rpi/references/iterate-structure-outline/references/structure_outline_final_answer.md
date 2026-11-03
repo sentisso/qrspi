@@ -9,10 +9,8 @@ The implementation outline has been created. It defines how we will approach the
 
 You can also ask me to add more detail, code snippets, pseudo-code, or mermaid diagrams.
 
-You can use the sharing & commenting features to collaborate with your teammates on this document - I can read, reply to and/or resolve comments whenever you're ready.
 
-
-Once you're happy with the approach, you can use the button below to set up a worktree, or create a new session with the following command: `/rpi:setup-worktree`
+Once you're happy with the approach, you can set up a worktree by creating a new session with the following command: `/rpi:setup-worktree`
 
 ```text
 /rpi:setup-worktree
@@ -20,4 +18,4 @@ Once you're happy with the approach, you can use the button below to set up a wo
 
 ---
 
-You can view the full artifact in the right sidebar, or on the web [here](cloud permalink from the hook)
+You can view the full artifact at `<saved-file-path>`.

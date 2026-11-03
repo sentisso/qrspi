@@ -9,10 +9,8 @@ The design document has been created!
 
 You can also ask me to add more detail, code snippets, pseudo-code, or mermaid diagrams.
 
-You can use the sharing & commenting features to collaborate with your teammates on this document - I can read, reply to and/or resolve comments whenever you're ready.
-
 We should resolve all design questions in the document before proceeding to the next phase.
 
 ---
 
-You can view the full artifact in the right sidebar, or share with your teammates on the web [here](cloud permalink from the hook)
+You can view the full artifact at `<saved-file-path>`.

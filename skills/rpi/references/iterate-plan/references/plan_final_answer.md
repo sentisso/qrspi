@@ -1,6 +1,6 @@
 ## Next Steps
 
-The plan has been created. When you're ready to proceed to set up a worktree, you can click the button below or create a new session with the following command:
+The plan has been created. When you're ready to proceed to set up a worktree, you can create a new session with the following command:
 
 ```text
 /rpi:setup-worktree
@@ -8,5 +8,5 @@ The plan has been created. When you're ready to proceed to set up a worktree, yo
 
 ---
 
-You can view the full artifact in the right sidebar, or on the web [here](cloud permalink from the hook)
+You can view the full artifact at `<saved-file-path>`.
 

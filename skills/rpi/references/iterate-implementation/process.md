@@ -11,8 +11,8 @@ An implementation plan was implemented and a user has follow-on feedback - it mi
 
 1. **Read all input files FULLY**:
    - Use Read tool WITHOUT limit/offset to read the plan document and any other provided paths
-   - If a ticket like ENG-1234 or a task is mentioned, find the task directory: `ls -La .humanlayer/tasks/ | grep -i TEAMID-XXX` - you must use Bash(ls | grep) for this as your glob/grep tools don't traverse symlinks
-   - `ls -La .humanlayer/tasks/TASKNAME` to find all related documents in the task directory. Do NOT use the grep or glob tools or `ls` without `-L` or with a lowercase `-l` as the directory may be a symlink.
+   - If a ticket like ENG-1234 or a task is mentioned, find the task directory: `ls -La .rpi/tasks/ | grep -i TEAMID-XXX` - you must use `ls | grep` for this as your glob/grep tools don't traverse symlinks
+   - `ls -La .rpi/tasks/TASKNAME` to find all related documents in the task directory. Do NOT use the grep or glob tools or `ls` without `-L` or with a lowercase `-l` as the directory may be a symlink.
    - Read the plan file (e.g. `NN-plan-DESCRIPTION.md`) to understand the work that was prescribed
    - Read prior artifacts in the task directory for context: `ticket.md` or `task.md`, research documents, design discussion, and structure outline
    - **If no plan exists**, read the ticket, structure outline, design discussion, and research documents instead
@@ -55,13 +55,6 @@ An implementation plan was implemented and a user has follow-on feedback - it mi
 
 
 <guidance>
-## Cloud Permalinks
-
-When you write or edit documents in .humanlayer/tasks/, a cloud permalink is automatically provided in the hook response.
-- The permalink appears as `additionalContext` after Write/Edit/MultiEdit/Read operations
-- Use this permalink in your final output for easy navigation
-- Example format: `http(s)://{DOMAIN}/artifacts/{artifactId}`
-
 ## Markdown Formatting
 
 When writing markdown files that contain code blocks showing other markdown (like README examples or SKILL.md templates), use 4 backticks (````) for the outer fence so inner 3-backtick code blocks don't prematurely close it:
@@ -82,6 +75,6 @@ If the iteration resolves all issues and no further changes are needed:
 
 1. Read the final output template:
 
-`Read({SKILLBASE}/references/iterate_implementation_final_answer.md)`
+Read `${CLAUDE_SKILL_DIR}/references/iterate-implementation/references/iterate_implementation_final_answer.md`
 
 2. Respond following the template exactly. Do not include a summary or other information.

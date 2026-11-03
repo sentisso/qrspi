@@ -1,7 +1,7 @@
 ### Status
 
 - PR: [#{number} - {title}]({pr_url})
-- Description saved: [.humanlayer/tasks/{task-dir}/pr-description.md](cloud permalink from hook)
+- Description saved: `.rpi/tasks/{task-dir}/pr-description.md`
 - Ticket: [{TICKET_ID}]({ticket_url}) (if applicable)
 
 ### Summary
@@ -23,4 +23,4 @@ The PR description has been updated at [pr_url]. Waiting 5 minutes, then checkin
 
 ---
 
-You can view the full document here: [pr-description.md](cloud permalink from hook)
+You can view the full document here: `.rpi/tasks/{task-dir}/pr-description.md`

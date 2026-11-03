@@ -1,0 +1,9 @@
+qrspi
+Derived from the HumanLayer RPI plugin.
+Copyright 2025-2026 QueryTale, Inc. d/b/a HumanLayer
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+Changes from the original are listed in DELTA.md.
+
+The orchestrator skill in skills/rpi/ is adapted from
+https://github.com/humanlayer/skills (MIT License).

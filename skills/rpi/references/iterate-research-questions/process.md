@@ -9,9 +9,9 @@ You are iterating on an existing research questions document based on user feedb
 
 ## Input
 
-- `docPath`: Path to the existing research questions document (e.g., `.humanlayer/tasks/ENG-XXXX-description/NN-research-questions-DESCRIPTION.md`)
+- `docPath`: Path to the existing research questions document (e.g., `.rpi/tasks/ENG-XXXX-description/NN-research-questions-DESCRIPTION.md`)
 - Optionally, a ticket file path containing comments with feedback
-- If only a directory is provided, check the task's artifact directory for a research questions document: `ls -La .humanlayer/tasks/<task slug>` from your prompt. Do NOT use grep or glob or run ls without `-L` or with `-l`, as the directory may be a symlink.
+- If only a directory is provided, check the task's artifact directory for a research questions document: `ls -La .rpi/tasks/<task slug>` from your prompt. Do NOT use grep or glob or run ls without `-L` or with `-l`, as the directory may be a symlink.
 
 ## Steps
 
@@ -32,7 +32,7 @@ You are iterating on an existing research questions document based on user feedb
 
 5. **Update the user**
    - Read the final output template:
-   `Read({SKILLBASE}/references/research_questions_final_answer.md)`
+   Read `${CLAUDE_SKILL_DIR}/references/iterate-research-questions/references/research_questions_final_answer.md`
    - Respond following the template. DO NOT add a summary or other information.
 
 ## Research Question Guidelines
@@ -72,13 +72,4 @@ Include questions such as:
 Consider carefully if UI or frontend changes are involved, even if not explicity mentioned in the ticket.
 
 This is the one question category that does not need to be tailored to the specific UI work described in the ticket - if we're making frontend changes, we need to understand the design system and patterns for one-off html mockups.
-</guidance>
-
-<guidance>
-## Cloud Permalinks
-
-When you write or edit documents in .humanlayer/tasks/, a cloud permalink is automatically provided in the hook response.
-- The permalink appears as `additionalContext` after Write/Edit/MultiEdit/Read operations
-- Use this permalink in your final output for easy navigation
-- Example format: `http(s)://{DOMAIN}/artifacts/{artifactId}`
 </guidance>

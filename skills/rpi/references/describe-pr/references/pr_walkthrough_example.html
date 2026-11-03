@@ -45,11 +45,10 @@
   Scale the number of nodes to the size of the PR - a small PR may only
   need a handful of nodes and no children.
 
-  The <style> block mirrors the app design system (packages/ui): poimandres
-  terminal palette, square corners, artifact-viewer prose typography
-  (system-ui sans, weight 300, generous line-height), with IBM Plex Mono
-  reserved for code and chrome (buttons, badges, stats, diff pills).
-  Keep it as-is so walkthroughs look like the product.
+  The <style> block uses a poimandres terminal palette, square corners,
+  light prose typography (system-ui sans, weight 300, generous line-height),
+  with IBM Plex Mono reserved for code and chrome (buttons, badges, stats,
+  diff pills). Keep it as-is so walkthroughs look consistent.
 
   In intro stats, keep value and label as one readable unit — e.g.
   <b class="ok">typecheck ✓ · quality ✓</b>pre-push gates — never bare
@@ -58,13 +57,11 @@
 <style>
   @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
 
-  /* Visual style follows packages/ui + the artifact viewer (tiptap.css):
-     poimandres terminal palette, square corners (radius 0 everywhere).
-     Prose typography matches the artifact viewer's rendered tab exactly:
-     system-ui sans, weight 300, generous line-height (1.9 for prose),
-     0.03em tracking, accent headings with negative tracking, underlined
-     accent links. IBM Plex Mono is reserved for code and for chrome
-     (buttons, badges, stats, diff pills) like the rest of the app. */
+  /* Visual style: poimandres terminal palette, square corners (radius 0
+     everywhere). Prose typography: system-ui sans, weight 300, generous
+     line-height (1.9 for prose), 0.03em tracking, accent headings with
+     negative tracking, underlined accent links. IBM Plex Mono is reserved
+     for code and for chrome (buttons, badges, stats, diff pills). */
   :root {
     --bg: #1b1e28; --bg-deep: #171922; --bg-alt: #303340;
     --row-hover: #717cb425; --row-open: #717cb418;

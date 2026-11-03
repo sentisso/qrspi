@@ -62,10 +62,10 @@ If the user asks to "continue working through questions" or "keep grilling" or s
 
 1. **Find and read the task directory**:
    - You should know the task directory, if not ask the user
-   - `ls -La .humanlayer/tasks/TASKNAME` to find all related documents in the task directory. Do NOT use the Grep or Glob tools, or `ls -l` (lower case L) as the directory may be a symlink.
+   - `ls -La .rpi/tasks/TASKNAME` to find all related documents in the task directory. Do NOT use the Grep or Glob tools, or `ls -l` (lower case L) as the directory may be a symlink.
    - Read ALL files in the task directory, including the current TDD and prior artifacts (`ticket.md` or `task.md`, research, design discussion, PRD if present, etc.)
    - **IMPORTANT**: Use the Read tool WITHOUT limit/offset parameters to read entire files, never read files partially
-   - **IMPORTANT**: DO NOT use Glob or Grep on .humanlayer/tasks — it may be a symlink
+   - **IMPORTANT**: DO NOT use Glob or Grep on .rpi/tasks — it may be a symlink
 
 2. **If the user gives any input**:
    - DO NOT just accept the correction blindly
@@ -130,8 +130,8 @@ If the user asks to "continue working through questions" or "keep grilling" or s
 </content_guidance>
 
 7. **When the user says they're done or the design is fully fleshed out**, read the final output template:
-   `Read({SKILLBASE}/references/tdd_final_answer_resolved.md)`
-   - Respond following the selected template exactly. Do not include a summary or other information. Include cloud permalinks if available.
+   Read `${CLAUDE_SKILL_DIR}/references/iterate-tdd/references/tdd_final_answer_resolved.md`
+   - Respond following the selected template exactly. Do not include a summary or other information.
 
 ## Document Precedence
 
@@ -175,14 +175,14 @@ sequenceDiagram
 Use HTML artifacts when a concept is too complex for Mermaid or plain text, especially when you need to combine code shape, data flow, UI structure, colors, annotations, or side-by-side comparisons.
 
 **Creating HTML artifacts:**
-- Write HTML files to `.humanlayer/tasks/{task-slug}/diagram-{description}.html`
-- Read `{SKILLBASE}/references/artifact_template.html` and follow it - copy its `<style>` block and build your content with its prose elements and utility classes so the artifact matches this application's visual language, not the codebase the TDD is about
+- Write HTML files to `.rpi/tasks/{task-slug}/diagram-{description}.html`
+- Read `${CLAUDE_SKILL_DIR}/references/iterate-tdd/references/artifact_template.html` and follow it - copy its `<style>` block and build your content with its prose elements and utility classes so the artifact matches the template's visual language, not the codebase the TDD is about
 - Keep each artifact focused on the decision at hand
 - Use realistic labels, not lorem ipsum
 
 **Displaying HTML artifacts inline:**
 ```task-artifact
-.humanlayer/tasks/{task-slug}/diagram-{description}.html
+.rpi/tasks/{task-slug}/diagram-{description}.html
 ```
 </guidance>
 
@@ -263,13 +263,6 @@ If no PRD exists:
 </guidance>
 
 <guidance>
-## Cloud Permalinks
-
-When you write or edit documents in .humanlayer/tasks/, a cloud permalink is automatically provided in the hook response.
-- The permalink appears as `additionalContext` after Write/Edit/MultiEdit/Read operations
-- Use this permalink in your final output for easy navigation
-- Example format: `http(s)://{DOMAIN}/artifacts/{artifactId}`
-
 ## Markdown Formatting
 
 When writing markdown files that contain code blocks showing other markdown (like README examples or SKILL.md templates), use 4 backticks (````) for the outer fence so inner 3-backtick code blocks don't prematurely close it:

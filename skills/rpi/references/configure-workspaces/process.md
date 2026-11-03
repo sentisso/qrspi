@@ -1,15 +1,15 @@
 ---
 name: configure-workspaces
-description: Propose and generate workspace configuration files (.humanlayer/workspace.json and .humanlayer/workspace.local.json) for a repository
+description: Propose and generate workspace configuration files (.rpi/workspace.json and .rpi/workspace.local.json) for a repository
 ---
 
 ## Purpose
 
 This skill reads the project, proposes a concise workspace configuration, writes the approved files, and validates them.
 
-The workspace config files control how worktrees are created when tasks use `workspaceTiming = now` in the Riptide task creation UI:
-- `.humanlayer/workspace.json` — shared team configuration, safe to commit
-- `.humanlayer/workspace.local.json` — machine-specific overrides, gitignored
+The workspace config files control how `setup-worktree` creates worktrees:
+- `.rpi/workspace.json` — shared team configuration, safe to commit
+- `.rpi/workspace.local.json` — machine-specific overrides, gitignored
 
 Use plain, brief language. State each point as one human speaking to another.
 
@@ -21,10 +21,10 @@ Use plain, brief language. State each point as one human speaking to another.
 
 Check the current directory and home directory:
 
-```
-Bash(pwd)
-Bash(printf '%s\n' "$HOME")
-Bash(git rev-parse --show-toplevel)
+```bash
+pwd
+printf '%s\n' "$HOME"
+git rev-parse --show-toplevel
 ```
 
 If `git rev-parse` succeeds, use that repository root as the working directory. State the path in one short sentence.
@@ -43,24 +43,15 @@ Use the same question when the current directory is not a Git repository. After 
 
 ### Step 1: Read the project
 
-Read any existing workspace config files:
-
-```
-Read(.humanlayer/workspace.json)
-Read(.humanlayer/workspace.local.json)
-```
+Read any existing workspace config files: `.rpi/workspace.json` and `.rpi/workspace.local.json`.
 
 Run all file reads and commands from the selected repository root.
 
-Check for coordination-repo signals (Claude config, additional sibling repos):
+Check for coordination-repo signals (Claude config, additional sibling repos). Read `.claude/settings.json`, `package.json`, `Makefile` and `README.md`, and run:
 
-```
-Read(.claude/settings.json)
-Bash(ls -la ../)
-Read(package.json)
-Read(Makefile)
-Read(README.md)
-Bash(git remote -v)
+```bash
+ls -la ../
+git remote -v
 ```
 
 Use an existing workspace config as the starting point. Infer changes from the repository and the user's request.
@@ -77,11 +68,11 @@ Infer a complete proposal from project files and common defaults.
 - For one repository, use `{ "localPath": ".", "primary": true }`.
 - For multiple repositories, include the related paths and mark exactly one primary repository.
 - Prefer the repository with the team's central Claude settings, MCP config, or agent policy as primary.
-- Use `~/.humanlayer/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}` as the default path template.
+- Use `~/.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}` as the default path template.
 - Use `origin/main` as the default source ref, or whatever default remote the user prefers (e.g. upstream/main - if there are multiple remotes, ask)
 - Infer a setup command from project scripts, package manager files, the Makefile, and the README.
-- Include local files that exist and are useful in a worktree, such as `.env`, `.env.local`, `.env.development.local`, `.claude/settings.local.json`, and `.humanlayer/workspace.local.json`.
-- Put machine-specific values in `.humanlayer/workspace.local.json`.
+- Include local files that exist and are useful in a worktree, such as `.env`, `.env.local`, `.env.development.local`, `.claude/settings.local.json`, and `.rpi/workspace.local.json`.
+- Put machine-specific values in `.rpi/workspace.local.json`.
 
 For multi-repository workspaces:
 
@@ -89,7 +80,7 @@ For multi-repository workspaces:
 - Skills and instruction files (`CLAUDE.md`/`AGENTS.md`) are loaded from **all** repos in the workspace.
 - Repo-local `.claude/settings*.json` / MCP-style configuration only governs sessions launched from a repo — so the repo holding the team's central Claude settings, MCP config, or agent policy should usually be primary.
 
-The first response after project inspection must show the proposed `.humanlayer/workspace.json` as a fenced `json` block. If local overrides are useful, show `.humanlayer/workspace.local.json` in a second fenced `json` block. End with one short line:
+The first response after project inspection must show the proposed `.rpi/workspace.json` as a fenced `json` block. If local overrides are useful, show `.rpi/workspace.local.json` in a second fenced `json` block. End with one short line:
 
 ```
 Tell me what to change, or approve this config.
@@ -110,7 +101,7 @@ Validate the proposed config before asking for approval.
 ```json
 {
   "disabled": false,
-  "pathTemplate": "~/.humanlayer/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
+  "pathTemplate": "~/.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
   "branchTemplate": "{{ TASKSLUG }}",
   "sourceRef": "origin/main",
   "setupCommand": "",
@@ -119,7 +110,7 @@ Validate the proposed config before asking for approval.
     ".env.local",
     ".env.development.local",
     ".claude/settings.local.json",
-    ".humanlayer/workspace.local.json"
+    ".rpi/workspace.local.json"
   ],
   "repos": [
     {
@@ -136,14 +127,14 @@ Validate the proposed config before asking for approval.
 ```json
 {
   "disabled": false,
-  "pathTemplate": "~/.humanlayer/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
+  "pathTemplate": "~/.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
   "branchTemplate": "{{ TASKSLUG }}",
   "sourceRef": "origin/main",
   "setupCommand": "bun install",
   "copyGlobs": [
     ".env",
     ".env.local",
-    ".humanlayer/workspace.local.json"
+    ".rpi/workspace.local.json"
   ],
   "repos": [
     {
@@ -176,14 +167,14 @@ Validate the proposed config before asking for approval.
 
 **Validate the generated config:**
 
-```
-Bash(git remote -v)
+```bash
+git remote -v
 ```
 
 For each repo `localPath`:
-- Check the directory exists: `Bash(ls -la <localPath>)`
-- Check it's a git repo: `Bash(git -C <localPath> rev-parse --git-dir)`
-- If `sourceRef` has a remote prefix, verify the remote exists: `Bash(git -C <localPath> remote -v | grep <prefix>)`
+- Check the directory exists: `ls -la <localPath>`
+- Check it's a git repo: `git -C <localPath> rev-parse --git-dir`
+- If `sourceRef` has a remote prefix, verify the remote exists: `git -C <localPath> remote -v | grep <prefix>`
 
 If `setupCommand` is set, state what it does in one sentence. Setup commands run after worktree creation.
 
@@ -195,28 +186,16 @@ If `setupCommand` is set, state what it does in one sentence. Setup commands run
 
 After approval, write the proposed config.
 
-Write `workspace.json`:
+Write `.rpi/workspace.json`.
 
-```
-Write(.humanlayer/workspace.json, <content>)
-```
+If there are local overrides, write `.rpi/workspace.local.json` and ensure it is gitignored.
 
-If there are local overrides, write `workspace.local.json` and ensure it is gitignored:
+Read `.gitignore` and check for the workspace.local.json entry.
 
-```
-Write(.humanlayer/workspace.local.json, <content>)
-```
+Add `.rpi/workspace.local.json` to `.gitignore` when needed:
 
-Check `.gitignore` for the workspace.local.json entry:
-
-```
-Read(.gitignore)
-```
-
-Add `.humanlayer/workspace.local.json` to `.gitignore` when needed:
-
-```
-Bash(echo '.humanlayer/workspace.local.json' >> .gitignore)
+```bash
+echo '.rpi/workspace.local.json' >> .gitignore
 ```
 
 </step>
@@ -238,22 +217,17 @@ Explain the next steps:
 ```
 The workspace configuration is now ready.
 
-You can:
-1. Return to the Riptide task creation UI and select "Now" for workspace setup
-2. Or use the workspace config modal (Settings icon on the Workspace axis) to review/edit the config
-
-When you create a task with "Workspace: Now", Riptide will:
+When you run `/rpi:setup-worktree`, it will:
 - Create a git worktree for each configured repo at the rendered path
 - Copy the configured files into each worktree
 - Run the setup command in each worktree
-- Start the task in the primary repo's worktree
 ```
 
 If the user is on a team, remind them to commit `workspace.json` (but not `workspace.local.json`):
 
-```
-Bash(git add .humanlayer/workspace.json)
-Bash(git status)
+```bash
+git add .rpi/workspace.json
+git status
 ```
 
 </step>
@@ -285,8 +259,8 @@ In a multi-repo workspace, exactly one repo should carry `"primary": true`. The 
 
 ### Coordination repos
 
-A coordination repo is a directory that doesn't contain the main project code but instead contains task management files (`.humanlayer/`, tickets, plans) and references sibling repos through `../api`, `../web`, etc. `localPath: "."` simply refers to the selected repository itself; mark whichever repo should be the default launch/config repo with `"primary": true`.
+A coordination repo is a directory that doesn't contain the main project code but instead contains task management files (`.rpi/`, tickets, plans) and references sibling repos through `../api`, `../web`, etc. `localPath: "."` simply refers to the selected repository itself; mark whichever repo should be the default launch/config repo with `"primary": true`.
 
 ### disabled field
 
-`disabled: true` at root level prevents workspace setup options that require worktree creation. The Riptide UI shows the source file that contributed `disabled: true` so users know which file to edit (or can re-enable in local overrides without touching shared config).
+`disabled: true` at root level prevents workspace setup options that require worktree creation. Users can re-enable it in local overrides without touching shared config.

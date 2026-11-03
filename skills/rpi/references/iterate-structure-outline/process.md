@@ -9,7 +9,7 @@ You are iterating on an existing structure outline document based on user feedba
 
 ## Input
 
-- If only a directory is provided, or a directory is not provided, check the task's artifact directory from your prompt: `ls -La .humanlayer/tasks/<task slug>`. Do NOT use grep or glob or `ls` or `ls -l`, as the directory may be a symlink.
+- If only a directory is provided, or a directory is not provided, check the task's artifact directory from your prompt: `ls -La .rpi/tasks/<task slug>`. Do NOT use grep or glob or `ls` or `ls -l`, as the directory may be a symlink.
 - Optionally, a ticket file path containing comments with feedback
 
 ## Initial Check
@@ -34,7 +34,7 @@ Then wait for the user's feedback before proceeding.
    - Review all design decisions and patterns to follow
 
 2. **Check for related task content**:
-   - If a path in `.humanlayer/tasks/TASKNAME` is mentioned, use `ls -La .humanlayer/tasks/TASKNAME`. Do NOT use `ls ` or `ls -l` as the directory may be a symlink.
+   - If a path in `.rpi/tasks/TASKNAME` is mentioned, use `ls -La .rpi/tasks/TASKNAME`. Do NOT use `ls ` or `ls -l` as the directory may be a symlink.
    - Read all relevant files in the task directory, including the structure outline, design discussion, research documents, and ticket
    - Read relevant files mentioned in the task files
 
@@ -51,7 +51,6 @@ Then wait for the user's feedback before proceeding.
    - **codebase-analyzer**: Deep-dive on specific implementations
    - **codebase-pattern-finder**: Find more examples of patterns
    - **web-search-researcher**: Research external best practices
-   - You _may_ see a humanlayer library researcher tool. If you do, you should use this to answer any research questions about dependencies and libraries.  If the tool is not present, do not mention it.
 
    Do not run agents in the background - FOREGROUND AGENTS ONLY.
 
@@ -93,21 +92,21 @@ These are intended to be **illustrative**. Not all work lends itself to this typ
    - Remove answered questions from "Open Questions"
 
 7. **Update the user**
-   - Check whether you are already in a worktree: `Bash(git rev-parse --git-dir)`
+   - Check whether you are already in a worktree: `git rev-parse --git-dir`
    - Read the appropriate final output template:
 
 <condition if="git-dir output contains '.git/worktrees/'">
 
-   `Read({SKILLBASE}/references/structure_outline_final_answer_in_worktree.md)`
+   Read `${CLAUDE_SKILL_DIR}/references/iterate-structure-outline/references/structure_outline_final_answer_in_worktree.md`
 
 <else>
 
-   `Read({SKILLBASE}/references/structure_outline_final_answer.md)`
+   Read `${CLAUDE_SKILL_DIR}/references/iterate-structure-outline/references/structure_outline_final_answer.md`
 
 </condition>
 
    - Never suggest setting up a worktree when you are already in one.
-   - Respond following the template exactly. Do not include a summary or other information. Include cloud permalinks if available.
+   - Respond following the template exactly. Do not include a summary or other information.
 
 ## Document Precedence
 
@@ -115,13 +114,6 @@ When documents conflict, the most recent document wins:
 **structure outline > TDD > PRD > design discussion > research > ticket**
 
 <guidance>
-## Cloud Permalinks
-
-When you write or edit documents in .humanlayer/tasks/, a cloud permalink is automatically provided in the hook response.
-- The permalink appears as `additionalContext` after Write/Edit/MultiEdit/Read operations
-- Use this permalink in your final output for easy navigation
-- Example format: `http(s)://{DOMAIN}/artifacts/{artifactId}`
-
 ## Markdown Formatting
 
 When writing markdown files that contain code blocks showing other markdown (like README examples or SKILL.md templates), use 4 backticks (````) for the outer fence so inner 3-backtick code blocks don't prematurely close it:

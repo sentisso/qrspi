@@ -27,7 +27,7 @@ The levels must build on one another. Do not tell the reviewer what files to rea
 
 ## Visual Language
 
-The deck renders inside an IDE-like artifact viewer and should match that environment:
+The deck should follow this visual language:
 
 - **Palette:** poimandres-inspired dark terminal colors. Deep navy background, pale blue headings, mint success/data flow, pink annotations, rose warnings, yellow special conditions.
 - **Typography:** system sans for prose; IBM Plex Mono for code, labels, stats, file names, keys, and diagram chrome.

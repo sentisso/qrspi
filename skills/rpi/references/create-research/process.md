@@ -59,7 +59,6 @@ Then wait for the user's research query.
 
    **For web research and researching libraries & dependencies (if applicable):**
    - Use the **web-search-researcher** agent for external documentation and resources
-   - You _may_ see a humanlayer library researcher tool. If you do, you should use this to answer any research questions about dependencies and libraries that are in scope for the research. If the tool is not present, do not mention it.
    - IF you use web-research agents, instruct them to return LINKS with their findings, and please INCLUDE those links in your final report
 
    The key is to use these agents intelligently:
@@ -77,44 +76,42 @@ Then wait for the user's research query.
    - Prioritize live codebase findings as primary source of truth
    - Connect findings across different components
    - Include specific file paths and line numbers for reference
-   - Verify all rpi/ paths are correct (task-specific files go in .humanlayer/tasks/)
+   - Verify all rpi/ paths are correct (task-specific files go in .rpi/tasks/)
    - Highlight patterns, connections, and architectural decisions
    - Answer the user's specific questions with concrete evidence
 
 5. **Gather metadata for the research document:**
-   - Filename: `.humanlayer/tasks/TASKNAME/NN-research-DESCRIPTION.md`
-     - First, check the task directory in your system prompt. If you do not see it, find the task directory: `ls -La .humanlayer/tasks | grep -i "eng-XXXX"`
-     - If the directory doesn't exist, create: `.humanlayer/tasks/ENG-XXXX-description/`
+   - Filename: `.rpi/tasks/TASKNAME/NN-research-DESCRIPTION.md`
+     - First, check the task directory in your system prompt. If you do not see it, find the task directory: `ls -La .rpi/tasks | grep -i "eng-XXXX"`
+     - If the directory doesn't exist, create: `.rpi/tasks/ENG-XXXX-description/`
      - Format: `NN-research-DESCRIPTION.md` where NN is a zero-padded chronological index and DESCRIPTION is a 2-4 word kebab-case slug
      - **Chronological indexing**: `ls -La` the task directory, find the highest existing NN- prefix, and use the next number. First document = `01-`, second = `02-`, etc.
      - Directory naming:
-       - With ticket: `.humanlayer/tasks/ENG-1478-parent-child-tracking/02-research-parent-child-tracking.md`
-       - Without ticket: `.humanlayer/tasks/authentication-flow/02-research-auth-flow.md`
+       - With ticket: `.rpi/tasks/ENG-1478-parent-child-tracking/02-research-parent-child-tracking.md`
+       - Without ticket: `.rpi/tasks/authentication-flow/02-research-auth-flow.md`
 
 6. **Generate research document:**
    - Use the metadata gathered in step 4
    - Read the research template:
 
-   `Read({SKILLBASE}/references/research_template.md)`
+   Read `${CLAUDE_SKILL_DIR}/references/create-research/references/research_template.md`
 
-   - Write the document to `.humanlayer/tasks/TASKNAME/NN-research-DESCRIPTION.md`
+   - Write the document to `.rpi/tasks/TASKNAME/NN-research-DESCRIPTION.md`
 
 7. **Attempt to answer open questions**
    - if there are open questions in the doc you write, dispatch subagents to additional targeted research AFTER you write the doc
    - update the doc with your findings, removing and open questions that now have answers - don't append to the end, 
    - do at most one additional pass to find more information, if your second group of subagents can't find all the answers, leave the remaining questions as open and proceed to the final answer 
 
-8. **Note cloud permalinks:**
-   Cloud permalinks are automatically provided when you write artifacts. Include them in your final output.
-
-   For code references in the humanlayer repo (if on main or pushed):
+8. **Link code references:**
+   For code references (if on main or pushed):
    - Get repo info: `gh repo view --json owner,name`
    - Create permalinks: `https://github.com/{owner}/{repo}/blob/{commit}/{file}#L{line}`
 
 9. **Respond to the user according to the template**
    - Read the final output template:
-   `Read({SKILLBASE}/references/research_final_answer.md)`
-   - Respond following the template exactly, include cloud permalinks if you have them.
+   Read `${CLAUDE_SKILL_DIR}/references/create-research/references/research_final_answer.md`
+   - Respond following the template exactly.
 
 10. **Handle follow-up questions:**
    - If the user has follow-up questions for you to investigate
@@ -257,12 +254,12 @@ Pick the views that make each part of the story clearest:
   - ALWAYS wait for all sub-agents to complete before synthesizing (step 4)
   - ALWAYS gather metadata before writing the document (step 5 before step 6)
   - NEVER write the research document with placeholder values
-- **Path handling**: Task-specific research goes in .humanlayer/tasks/
-  - Use `.humanlayer/tasks/ENG-XXXX-description/NN-research-DESCRIPTION.md` for task research
+- **Path handling**: Task-specific research goes in .rpi/tasks/
+  - Use `.rpi/tasks/ENG-XXXX-description/NN-research-DESCRIPTION.md` for task research
 
 ## Response
 
-Remember, you must respond to the user according to the output template at `{SKILLBASE}/references/research_final_answer.md`
+Remember, you must respond to the user according to the output template at `${CLAUDE_SKILL_DIR}/references/create-research/references/research_final_answer.md`
 
 <important if="there are open questions in the research document">
 
@@ -277,13 +274,6 @@ There are N open questions that you should review, you can
 - tell me they are irrelevant and I'll remove them
 ```
 </important>
-
-## Cloud Permalinks
-
-When you write or edit documents in .humanlayer/tasks/, a cloud permalink is automatically provided in the hook response.
-- The permalink appears as `additionalContext` after Write/Edit/MultiEdit/Read operations
-- Use this permalink in your final output for easy navigation
-- Example format: `http(s)://{DOMAIN}/artifacts/{artifactId}`
 
 ## Markdown Formatting
 

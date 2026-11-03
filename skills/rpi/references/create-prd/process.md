@@ -25,16 +25,16 @@ You run the PRD as a guided conversation. You settle the **foundation** - the pr
 
 **Stay in product space.** Only ask product questions - user experience, functionality, and behavior. If you find yourself reaching for database schemas, storage locations, or implementation architecture, note it in a "Deferred to TDD" section and move on.
 
-**Get more context when you need it.** When a decision depends on how the product or codebase actually works, spawn Agent() calls (codebase-locator, codebase-analyzer, codebase-pattern-finder, web-search-researcher, or the library researcher) before presenting options. Fold any new findings back into the research artifact.
+**Get more context when you need it.** When a decision depends on how the product or codebase actually works, spawn Agent() calls (codebase-locator, codebase-analyzer, codebase-pattern-finder, or web-search-researcher) before presenting options. Fold any new findings back into the research artifact.
 
 ---
 
 <step index="1" name="understand-the-context">
 
 <instructions>
-- Find the task directory: `ls -La .humanlayer/tasks/TASKNAME` (use Bash `ls -La` - not Grep/Glob - the directory may be a symlink).
+- Find the task directory: `ls -La .rpi/tasks/TASKNAME` (use Bash `ls -La` - not Grep/Glob - the directory may be a symlink).
 - Read every relevant file in the task directory **fully** (Read with no limit/offset), excluding research-questions docs.
-- Read the PRD template: `Read({SKILLBASE}/references/prd_template.md)`.
+- Read the PRD template: read `${CLAUDE_SKILL_DIR}/references/create-prd/references/prd_template.md`.
 </instructions>
 
 <guidance>
@@ -48,7 +48,7 @@ There is no required upstream artifact. The product context might be a detailed 
 
 ## Design system for mockups
 
-If the work touches UI/UX, your mockups should match the **user's product** - its colors, typography, spacing, and components - not this application. Check the research doc for design-system details first. If none are documented, spawn a **codebase-analyzer** before you build mockups:
+If the work touches UI/UX, your mockups should match the **user's product** - its colors, typography, spacing, and components. Check the research doc for design-system details first. If none are documented, spawn a **codebase-analyzer** before you build mockups:
 - What design system or component library is used for $PRODUCT_AREA?
 - Primary colors (with hex codes), typography, spacing, borders, shadows?
 - What theming system exists, if any?
@@ -59,7 +59,7 @@ If the work touches UI/UX, your mockups should match the **user's product** - it
 <step index="2" name="write-the-skeleton">
 
 <instructions>
-Write the doc to `.humanlayer/tasks/ENG-XXXX-description/NN-prd-DESCRIPTION.md` (next zero-padded `NN-` index in the task dir; `DESCRIPTION` is a 2-4 word kebab-case slug).
+Write the doc to `.rpi/tasks/ENG-XXXX-description/NN-prd-DESCRIPTION.md` (next zero-padded `NN-` index in the task dir; `DESCRIPTION` is a 2-4 word kebab-case slug).
 
 **Keep the skeleton as minimal as possible. No preamble, no setup, no summaries.** The faster you reach the first question, the more the user stays engaged in building the PRD. Write only:
 - Frontmatter with `type: design-prd`, plus the top-level title
@@ -68,7 +68,7 @@ Write the doc to `.humanlayer/tasks/ENG-XXXX-description/NN-prd-DESCRIPTION.md` 
 
 Then respond immediately by opening the foundation with the **first question** - at most one short orienting line, then the question. Quote the actual "Problem to Solve" content you drafted so the user reacts to the exact wording, not a summary. For example:
 
-> I've started the PRD - you can view it in the right sidebar. First question: does this **Problem to Solve** sound right?
+> I've started the PRD. First question: does this **Problem to Solve** sound right?
 >
 > > ...your statement of the problem...
 >
@@ -121,13 +121,13 @@ When an answer reshapes the work, touch every affected section in the same pass:
 
 Mockups are how you communicate visually - use them liberally when discussing UI.
 
-- Write HTML files to `.humanlayer/tasks/{task-slug}/mockup-{description}.html`
+- Write HTML files to `.rpi/tasks/{task-slug}/mockup-{description}.html`
 - Follow the **user's product** design system (colors, fonts, components) found in Step 1; use realistic labels, not lorem ipsum
 - Keep each mockup focused on the decision at hand
 
 Display inline:
 ```task-artifact
-.humanlayer/tasks/{task-slug}/mockup-{description}.html
+.rpi/tasks/{task-slug}/mockup-{description}.html
 ```
 
 Update mockups as decisions evolve; the final PRD should embed the "winning" versions.
@@ -150,7 +150,7 @@ Wait for the user's approval and incorporate any fixes they raise.
 <step index="6" name="wrap-up">
 
 <instructions>
-When the solution is approved, read the final answer template and follow it exactly (it points to the next step - the TDD): `Read({SKILLBASE}/references/prd_final_answer_resolved.md)`. Include cloud permalinks if available.
+When the solution is approved, read the final answer template and follow it exactly (it points to the next step - the TDD): read `${CLAUDE_SKILL_DIR}/references/create-prd/references/prd_final_answer_resolved.md`.
 </instructions>
 
 </step>

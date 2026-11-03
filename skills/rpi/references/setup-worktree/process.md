@@ -9,12 +9,7 @@ description: Only use when the user explicitly invokes this skill by name.
 
 ### Step 0: Check if worktree setup should be skipped
 
-First, check if workspace setup is disabled via config files:
-
-```
-Read(.humanlayer/workspace.json)
-Read(.humanlayer/workspace.local.json)
-```
+First, check if workspace setup is disabled: read `.rpi/workspace.json` and `.rpi/workspace.local.json`.
 
 <condition if="disabled is true (workspace.local.json takes precedence over workspace.json)">
 Worktree setup is disabled for this project.
@@ -23,16 +18,16 @@ Worktree setup is disabled for this project.
 
 First, check out the task branch for the user:
 
-```
-Bash(git checkout -b [BRANCHNAME])
+```bash
+git checkout -b [BRANCHNAME]
 ```
 
 Then output this final answer:
 
 <output_example>
-Workspace setup is disabled for this project (via `.humanlayer/workspace.json` or `.humanlayer/workspace.local.json`).
+Workspace setup is disabled for this project (via `.rpi/workspace.json` or `.rpi/workspace.local.json`).
 
-I've checked out branch `[BRANCHNAME]` for you. To start implementation, use the button below or create a new session with the following command:
+I've checked out branch `[BRANCHNAME]` for you. To start implementation, create a new session with the following command:
 
 ```text
 /rpi:implement-outline
@@ -40,7 +35,7 @@ I've checked out branch `[BRANCHNAME]` for you. To start implementation, use the
 
 If you really do want to create a worktree anyway, let me know and I can still help with that.
 
-To re-enable workspace setup, edit the file that sets `disabled: true` and change it to `false`, or add `"disabled": false` to `.humanlayer/workspace.local.json` to override the shared config.
+To re-enable workspace setup, edit the file that sets `disabled: true` and change it to `false`, or add `"disabled": false` to `.rpi/workspace.local.json` to override the shared config.
 </output_example>
 
 **Do NOT proceed to Step 1 unless the user explicitly confirms they want to create a worktree anyway.**
@@ -48,8 +43,8 @@ To re-enable workspace setup, edit the file that sets `disabled: true` and chang
 
 Next, check if you're already in a git worktree:
 
-```
-Bash(git rev-parse --git-dir)
+```bash
+git rev-parse --git-dir
 ```
 
 <condition if="output contains '.git/worktrees/'">
@@ -60,7 +55,7 @@ You are already inside a worktree. Creating another worktree from here is probab
 <output_example>
 You're already in a worktree at `[current directory]`.
 
-To start implementation, use the button below or create a new session with the following command:
+To start implementation, create a new session with the following command:
 
 ```text
 /rpi:implement-outline
@@ -78,33 +73,24 @@ If you really do want to create a new worktree from here, let me know and I can 
 
 ### Step 1 Get required information
 
-1. Figure out what task you're working on - you should have the slug to .humanlayer/tasks/TASKSLUG already
+1. Figure out what task you're working on - you should have the slug to .rpi/tasks/TASKSLUG already
 
-1a. once you have a task dir, read ticket.md (or task.md) and outline.md if present:
-
-```
-Read(.humanlayer/tasks/TASKSLUG/ticket.md)   # or task.md
-Read(.humanlayer/tasks/TASKSLUG/...outline...md)
-```
+1a. once you have a task dir, read `.rpi/tasks/TASKSLUG/ticket.md` (or `task.md`) and the structure outline (`.rpi/tasks/TASKSLUG/...outline...md`) if present.
 
 </step>
 
 
-<step index=2 only_if="no .humanlayer/workspace.json or .humanlayer/workspace.local.json was found">
+<step index=2 only_if="no .rpi/workspace.json or .rpi/workspace.local.json was found">
 
-First, check for the legacy create_worktree.sh script to see if the user has existing preferences
-
-```
-Read(scripts/create_worktree.sh)
-```
+First, read the legacy `scripts/create_worktree.sh` script, if it exists, to see if the user has existing preferences.
 
 <subcondition if="script not exists">
-If no script is found, create a new `.humanlayer/workspace.json` with the following default content:
+If no script is found, create a new `.rpi/workspace.json` with the following default content:
 
 ```json
 {
   "disabled": false,
-  "pathTemplate": "~/.humanlayer/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
+  "pathTemplate": "~/.rpi/workspaces/{{ TASKSLUG }}/{{ REPOBASENAME }}",
   "branchTemplate": "{{ TASKSLUG }}",
   "repos": [
     {
@@ -116,7 +102,7 @@ If no script is found, create a new `.humanlayer/workspace.json` with the follow
           ".env*",
           ".claude/settings.local.json",
           "CLAUDE.local.md",
-          ".humanlayer/workspace.local.json"
+          ".rpi/workspace.local.json"
       ]
     }
   ]
@@ -125,7 +111,7 @@ If no script is found, create a new `.humanlayer/workspace.json` with the follow
 </subcondition>
 
 <subcondition if="script exists">
-If the create_worktree.sh script exists, create a new `.humanlayer/workspace.json` matching the conventions in the script, including copyGlobs, setupCommand, etc.
+If the create_worktree.sh script exists, create a new `.rpi/workspace.json` matching the conventions in the script, including copyGlobs, setupCommand, etc.
 </subcondition>
 
 Note: For multi-repo setups, add additional entries to `repos[]` with relative paths like `"localPath": "../other-repo"`. The `localPath: "."` entry is required and becomes the primary working directory.
@@ -136,7 +122,7 @@ If the user wants more control over the workspace configuration (custom paths, s
 
 <step index=3>
 
-Create the worktree according to .humanlayer/workspace.json and .humanlayer/workspace.local.json, taking the workspace.local.json as overrides for the workspace.json config.
+Create the worktree according to .rpi/workspace.json and .rpi/workspace.local.json, taking the workspace.local.json as overrides for the workspace.json config.
 
 REPOBASENAME is the basename of the repository, e.g. ~/repos/humanlayer -> humanlayer
 
@@ -144,12 +130,12 @@ REPOBASENAME is the basename of the repository, e.g. ~/repos/humanlayer -> human
   <step index=3.1>
     Create the worktree for the repository
 
-    ```
-    Bash(git worktree add -b {{ branchTemplate(TASKSLUG) }} {{ pathTemplate(TASKSLUG, REPOBASENAME) }} {{ sourceRef }})
+    ```bash
+    git worktree add -b {{ branchTemplate(TASKSLUG) }} {{ pathTemplate(TASKSLUG, REPOBASENAME) }} {{ sourceRef }}
     ```
   </step>
   <step index=3.2>
-    Copy the files matching the patterns specified in the `copyGlobs` key of `.humanlayer/workspace.json` (and overridden by `.humanlayer/workspace.local.json`, if present) from the repository root into the new worktree directory (computed by pathTemplate)
+    Copy the files matching the patterns specified in the `copyGlobs` key of `.rpi/workspace.json` (and overridden by `.rpi/workspace.local.json`, if present) from the repository root into the new worktree directory (computed by pathTemplate)
 
     ```bash
     ls -la [REPO_ROOT]/[glob-pattern]
@@ -165,7 +151,7 @@ REPOBASENAME is the basename of the repository, e.g. ~/repos/humanlayer -> human
     For example, `.claude/settings.local.json` → `[WORKTREE_FULL_PATH]/.claude/settings.local.json`
   </step>
   <step index=3.3>
-   Then run the setup command specified in the `setupCommand` key of `.humanlayer/workspace.json` (and overridden by `.humanlayer/workspace.local.json`, if present) in the new worktree directory.
+   Then run the setup command specified in the `setupCommand` key of `.rpi/workspace.json` (and overridden by `.rpi/workspace.local.json`, if present) in the new worktree directory.
 
     ```
     cd [WORKTREE_FULL_PATH] && [setup-command]
@@ -189,12 +175,12 @@ If you encountered an error in Step 3, do NOT output this section.
 Worktree for {{ TASKSLUG }} has been configured. You can start implementation by running
 
 ```text
-use the rpi:implement-outline skill for task .humanlayer/tasks/{{ TASKSLUG }}
+use the rpi:implement-outline skill for task .rpi/tasks/{{ TASKSLUG }}
 ```
 
 in the [WORKTREE_FULL_PATH] directory
 
-You can modify worktree behavior by editing the .humanlayer/workspace.json (committed, shared config) and .humanlayer/workspace.local.json (local overrides, gitignored) files.
+You can modify worktree behavior by editing the .rpi/workspace.json (committed, shared config) and .rpi/workspace.local.json (local overrides, gitignored) files.
 
 </output_example>
 
