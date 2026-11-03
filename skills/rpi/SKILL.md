@@ -15,7 +15,7 @@ Paths in the phase instructions start with the CLAUDE_SKILL_DIR variable, which 
 
 Follow the user's requested step. Read `${CLAUDE_SKILL_DIR}/references/workflow.md` when choosing or explaining a flow or what comes next.
 
-For a task description with no requested step, ask which flow the user wants: `rpi` (design discussion), `prd` (PRD followed by TDD) or `oneshot` (implementation from the ticket), unless the request names one. Wait for their choice before starting the phase, then carry it into suggested next commands.
+For a task description with no requested step, ask which flow the user wants: `rpi` (design discussion), `prd` (PRD followed by TDD) or `oneshot` (implementation from the ticket), unless the request names one. Wait for their choice before starting the phase, then carry it into suggested next commands up to `create-structure-outline`.
 
 When asking the user to choose a flow, read `${CLAUDE_SKILL_DIR}/references/workflow-choice.md` and follow it to show the chart and ask the question.
 
@@ -34,7 +34,7 @@ Load the matching process from `${CLAUDE_SKILL_DIR}/references/<step>/process.md
 | Detailed plan | `create-plan` or `iterate-plan` |
 | Worktree setup | `setup-worktree` |
 | Worktree configuration | `configure-workspaces` |
-| Implement | `implement-outline`, or `implement-plan` when a plan exists or the flow is `oneshot` |
+| Implement | `implement-outline`, `implement-plan` when a plan exists, or `implement-direct` when there is neither an outline nor a plan |
 | Implementation feedback or fixes | `iterate-implementation` |
 | Pull request | `describe-pr` |
 | Commit | `ci-commit` |
@@ -63,11 +63,9 @@ Write the user's task description verbatim under a heading with the task name:
 <Task description, verbatim>
 ```
 
-## Implement a Oneshot Task
+## Start a Oneshot Task
 
-In the `oneshot` flow, run `implement-plan` without a subagent. There's no plan: implement `ticket.md` directly, then read the final answer template from the `implement-plan` directory and reproduce the final answer from it exactly, with its last line pointing at `ticket.md` instead of the plan.
-
-When the user starts a `oneshot` task, write `ticket.md`, then let them choose the next step. Leave out the worktree option when `git rev-parse --git-dir` contains `.git/worktrees/`:
+When the user starts a `oneshot` task, write `ticket.md`, then let them choose the next step. Leave out the worktree option when you're already inside one (`git rev-parse --git-dir` contains `.git/worktrees/`):
 
 ````markdown
 The ticket has been saved to `.rpi/tasks/<task-slug>/ticket.md`. Run one of these next steps in a new session:
@@ -75,25 +73,25 @@ The ticket has been saved to `.rpi/tasks/<task-slug>/ticket.md`. Run one of thes
 - **Worktree (optional):** set up an isolated worktree for the implementation.
 
   ```text
-  /rpi setup-worktree <task-slug> flow: oneshot
+  /rpi setup-worktree <task-slug>
   ```
 
 - **Implement:** start building from the ticket in the current checkout.
 
   ```text
-  /rpi implement-plan <task-slug> flow: oneshot
+  /rpi implement-direct <task-slug>
   ```
 ````
 
 ## Suggest the Next Step
 
-Use the phase's final-answer template and `${CLAUDE_SKILL_DIR}/references/workflow.md` to choose what comes next. Users run each phase in a separate context window. When suggesting a next command, include the task slug and chosen flow. Say it's recommended to run it in a new session.
+Use the phase's final-answer template and `${CLAUDE_SKILL_DIR}/references/workflow.md` to choose what comes next. Users run each phase in a separate context window. When suggesting a next command, include the task slug, and the chosen flow for commands up to `create-structure-outline`. `setup-worktree` and the implement steps choose their route from the task's documents and take no flow. Say it's recommended to run it in a new session.
 
 Use artifact filenames to locate the current phase when asked what's next, then read its document for unfinished work and settled choices. Tell `research-questions` files apart from `research` files. Recognize `prd` or `product-requirements`, `tdd` or `tech-design`, `structure-outline` or `outline`, and `plan`. A structure outline or plan whose phases are not all marked `✅` means implementation is unfinished. A task directory with only `ticket.md` is either a `oneshot` task or a task that has not started. Check the branch for implementation commits to tell them apart.
 
 ## Use Subagents
 
-Use the bundled agent instructions for `codebase-analyzer`, `codebase-locator`, `codebase-pattern-finder`, `implementation-reviewer`, `implementer-agent`, `outline-implementer-agent`, and `web-search-researcher` as directed by each phase.
+Use the bundled agent instructions for `codebase-analyzer`, `codebase-locator`, `codebase-pattern-finder`, `implementation-reviewer`, `implementer-agent`, `oneshot-implementer-agent`, `outline-implementer-agent`, and `web-search-researcher` as directed by each phase.
 
 <important if="you have a tool for running subagents or delegated sessions, but the named subagents are not available">
   read the subagent instructions from `${CLAUDE_SKILL_DIR}/references/agents/<agent-name>.md` and pass them into the subagent with your main prompt, with

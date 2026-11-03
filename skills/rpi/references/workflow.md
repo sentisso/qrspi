@@ -37,7 +37,7 @@ The user can start at any step. After research or any design step, they can skip
 
 | After | Next step |
 | --- | --- |
-| Task start | `create-research-questions` (`rpi`, `prd`), or for `oneshot` the user's choice: `setup-worktree` when not in a worktree, or `implement-plan` |
+| Task start | `create-research-questions` (`rpi`, `prd`), or for `oneshot` the user's choice: `setup-worktree` when not in a worktree, or `implement-direct` |
 | `create-research-questions` | `create-research` |
 | `create-research` | `create-design-discussion` (`rpi`) or `create-prd` (`prd`) |
 | `create-design-discussion` | `create-structure-outline`, once every design question is resolved |
@@ -45,19 +45,19 @@ The user can start at any step. After research or any design step, they can skip
 | `create-tech-design` | `create-structure-outline` |
 | `create-structure-outline` | The user's choice: `create-plan`, `setup-worktree` when not in a worktree, or `implement-outline` |
 | `create-plan` | The user's choice: `setup-worktree` when not in a worktree, or `implement-plan` |
-| `setup-worktree` | `implement-outline`, or `implement-plan` when a plan exists or the flow is `oneshot` |
-| `implement-outline`, `implement-plan` | `describe-pr` |
+| `setup-worktree` | `implement-outline`, `implement-plan` when a plan exists, or `implement-direct` when there is neither an outline nor a plan |
+| `implement-outline`, `implement-plan`, `implement-direct` | `describe-pr` |
 
 An `iterate-*` step leads to the same next step as its `create-*` step.
 
 ## Documents Carry Context Between Sessions
 
-Use a separate context window for each phase. Save current decisions, user approvals, and unfinished questions in the document before handing off. Each next command includes the task slug and chosen flow, for example:
+Use a separate context window for each phase. Save current decisions, user approvals, and unfinished questions in the document before handing off. Each next command includes the task slug. Commands up to `create-structure-outline` also include the chosen flow, for example:
 
 ```text
 /rpi create-research ENG-1478-parent-child-tracking flow: prd
 /rpi create-prd ENG-1478-parent-child-tracking flow: prd
-/rpi create-structure-outline ENG-1478-parent-child-tracking
+/rpi create-structure-outline ENG-1478-parent-child-tracking flow: prd
 /rpi implement-outline ENG-1478-parent-child-tracking
 ```
 

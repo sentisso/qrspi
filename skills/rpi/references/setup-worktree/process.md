@@ -5,7 +5,7 @@ description: Only use when the user explicitly invokes this skill by name.
 
 ## steps to follow
 
-When the task directory has a plan (`*-plan-*.md`), suggest `/rpi implement-plan <task-slug>` instead of `/rpi implement-outline <task-slug>` in every final answer below. When the flow is `oneshot`, suggest `/rpi implement-plan <task-slug> flow: oneshot` instead.
+When the task directory has a plan (`*-plan-*.md`), suggest `/rpi implement-plan <task-slug>` instead of `/rpi implement-outline <task-slug>` in every final answer below. When the task directory has neither a structure outline nor a plan, suggest `/rpi implement-direct <task-slug>` instead.
 
 <step index=0>
 
