@@ -1,10 +1,18 @@
 ## Next Steps
 
-The plan has been created. When you're ready to proceed to set up a worktree, you can create a new session with the following command:
+The plan has been created. Spot-check its tasks and checks, and ask for any changes. Once you're happy with it, run one of these next steps in a new session:
 
-```text
-/rpi setup-worktree <task-slug>
-```
+- **Worktree (optional):** set up an isolated worktree for the implementation.
+
+  ```text
+  /rpi setup-worktree <task-slug>
+  ```
+
+- **Implement:** start building from the plan in the current checkout.
+
+  ```text
+  /rpi implement-plan <task-slug>
+  ```
 
 ---
 

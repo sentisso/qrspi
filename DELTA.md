@@ -203,7 +203,6 @@ Upstream starts every task with the design-discussion flow, so its handoffs carr
 - The `research_final_answer.md` command becomes `/rpi <next-step> <task-slug> flow: <chosen-flow>`. Step 9 of `create-research` and step 5 of `iterate-research` gain a first bullet: "Read `${CLAUDE_SKILL_DIR}/references/workflow.md` to select the next step for the chosen flow."
 - The `design_discussion_final_answer_resolved.md` command gains `flow: <chosen-flow>`.
 - The `prd_final_answer_resolved.md` and `tdd_final_answer_resolved.md` commands gain `flow: prd`.
-- `create-structure-outline` and `iterate-structure-outline` gain, after "Never suggest setting up a worktree when you are already in one": "In the `plan` flow, suggest `/rpi create-plan <task-slug> flow: plan` instead of the template's command."
 - `setup-worktree` gains, after `## steps to follow`: "When the task directory has a plan (`*-plan-*.md`), suggest `/rpi implement-plan <task-slug>` instead of `/rpi implement-outline <task-slug>` in every final answer below."
 
 Apply each change to both the `create-*` and the `iterate-*` copy.
@@ -276,4 +275,74 @@ This check prints nothing when the rewrite is complete:
 
 ```bash
 grep -nE '<loop for="each repo|git worktree add|create_worktree|index=4' skills/rpi/references/setup-worktree/process.md
+```
+
+### M11. Offer the detailed plan, worktree and implementation after the outline (manual)
+
+Upstream sends the outline to `setup-worktree` and keeps the detailed plan out of the flow. In the port, the user picks the next step at the end of the structure outline, and the final answers mark the plan and the worktree as optional. Apply each change to both the `create-*` and the `iterate-*` copy.
+
+- `structure_outline_final_answer.md`: replace everything from "Once you're happy with the approach" up to `---` with:
+
+````markdown
+Once you're happy with the approach, run one of these next steps in a new session:
+
+- **Detailed plan (optional):** write code-level changes for each phase before implementing.
+
+  ```text
+  /rpi create-plan <task-slug>
+  ```
+
+- **Worktree (optional):** set up an isolated worktree for the implementation.
+
+  ```text
+  /rpi setup-worktree <task-slug>
+  ```
+
+- **Implement:** start building from the outline in the current checkout.
+
+  ```text
+  /rpi implement-outline <task-slug>
+  ```
+````
+
+- `structure_outline_final_answer_in_worktree.md`: replace everything from "You're already in a worktree" up to `---` with:
+
+````markdown
+You're already in a worktree (or workspace setup is disabled), so once you're happy with the approach, run one of these next steps in a new session:
+
+- **Detailed plan (optional):** write code-level changes for each phase before implementing.
+
+  ```text
+  /rpi create-plan <task-slug>
+  ```
+
+- **Implement:** start building from the outline.
+
+  ```text
+  /rpi implement-outline <task-slug>
+  ```
+````
+
+- `plan_final_answer.md`: replace everything from "The plan has been created" up to `---` with:
+
+````markdown
+The plan has been created. Once you're happy with it, run one of these next steps in a new session:
+
+- **Worktree (optional):** set up an isolated worktree for the implementation.
+
+  ```text
+  /rpi setup-worktree <task-slug>
+  ```
+
+- **Implement:** start building from the plan in the current checkout.
+
+  ```text
+  /rpi implement-plan <task-slug>
+  ```
+````
+
+This check prints nothing when the rewrite is complete:
+
+```bash
+grep -rlE 'create a new session with the following command|go straight to implementation' skills/rpi/references/{create,iterate}-{structure-outline,plan}/references
 ```

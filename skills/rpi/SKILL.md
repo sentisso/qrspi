@@ -15,7 +15,7 @@ Paths in the phase instructions start with the CLAUDE_SKILL_DIR variable, which 
 
 Follow the user's requested step. Read `${CLAUDE_SKILL_DIR}/references/workflow.md` when choosing or explaining a flow or what comes next.
 
-For a task description with no requested step, start with research questions. Ask which flow the user wants: `rpi` (design discussion), `prd` (PRD followed by TDD), or `plan` (design discussion plus a detailed plan). Wait for their choice before starting the phase, then carry it into suggested next commands.
+For a task description with no requested step, start with research questions. Ask which flow the user wants: `rpi` (design discussion) or `prd` (PRD followed by TDD). Wait for their choice before starting the phase, then carry it into suggested next commands.
 
 When asking the user to choose a flow, read `${CLAUDE_SKILL_DIR}/references/workflow-choice.md` and show its box-and-line chart with the question.
 

@@ -2,19 +2,18 @@
 
 Research establishes what exists, design settles what should change, and implementation builds the agreed result. Use the shortest path that gives the user useful review points.
 
-## Three Flows
+## Two Flows
 
 Each flow starts with research questions and research:
 
 | Flow | After research | Then |
 | --- | --- | --- |
-| `rpi` (default) | Design discussion | Structure outline, worktree (optional), implement outline, PR |
-| `prd` | PRD, then TDD | Structure outline, worktree (optional), implement outline, PR |
-| `plan` | Design discussion | Structure outline, detailed plan, worktree (optional), implement plan, PR |
+| `rpi` (default) | Design discussion | Structure outline, detailed plan (optional), worktree (optional), implement, PR |
+| `prd` | PRD, then TDD | Structure outline, detailed plan (optional), worktree (optional), implement, PR |
 
 - Design discussion combines product and technical choices in one document. It fits a change with a few clear options.
 - PRD followed by TDD separates the user-facing result from the technical approach. It fits a larger feature with open product questions.
-- The detailed plan adds code-level steps after the outline. Use it only when the user asks for it.
+- After the structure outline, the user chooses the next step: a detailed plan with code-level steps, a worktree, or implementation.
 
 The user can start at any step. After research or any design step, they can skip ahead to an outline or to implementation when the documents already specify the task well enough.
 
@@ -28,6 +27,7 @@ The user can start at any step. After research or any design step, they can skip
 | PRD | Product problem, success measure, and approved solution | The user approves the product solution |
 | TDD | System design, then program design | The user approves each design separately |
 | Structure outline | Ordered vertical phases, each with a testable result and checks | The user reviews the scope and phase order |
+| Detailed plan | Code-level changes for each outline phase | The user reviews the changes before implementation |
 | Implementation | Code, tests, and a commit per phase | The user confirms manual checks before the next phase |
 | PR | Pull request with description and optional walkthrough | The user reviews the code |
 
@@ -36,13 +36,13 @@ The user can start at any step. After research or any design step, they can skip
 | After | Next step |
 | --- | --- |
 | `create-research-questions` | `create-research` |
-| `create-research` | `create-design-discussion` (`rpi`, `plan`) or `create-prd` (`prd`) |
+| `create-research` | `create-design-discussion` (`rpi`) or `create-prd` (`prd`) |
 | `create-design-discussion` | `create-structure-outline`, once every design question is resolved |
 | `create-prd` | `create-tech-design` |
 | `create-tech-design` | `create-structure-outline` |
-| `create-structure-outline` | `create-plan` in the `plan` flow, otherwise `setup-worktree` when not in a worktree, otherwise `implement-outline` |
-| `create-plan` | `setup-worktree` when not in a worktree, otherwise `implement-plan` |
-| `setup-worktree` | `implement-outline`, or `implement-plan` in the `plan` flow |
+| `create-structure-outline` | The user's choice: `create-plan`, `setup-worktree` when not in a worktree, or `implement-outline` |
+| `create-plan` | The user's choice: `setup-worktree` when not in a worktree, or `implement-plan` |
+| `setup-worktree` | `implement-outline`, or `implement-plan` when a plan exists |
 | `implement-outline`, `implement-plan` | `describe-pr` |
 
 An `iterate-*` step leads to the same next step as its `create-*` step.
@@ -75,7 +75,7 @@ Documents are numbered by a zero-padded prefix in creation order:
 ├── 02-research-<description>.md
 ├── 03-design-discussion-<description>.md   # or 03-prd-<description>.md, 04-tdd-<description>.md
 ├── 04-structure-outline-<description>.md
-├── 05-plan-<description>.md                # plan flow only
+├── 05-plan-<description>.md                # optional
 ├── mockup-*.html, diagram-*.html           # optional
 └── pr-description.md, pr-walkthrough.html  # written by describe-pr
 ```

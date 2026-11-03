@@ -10,11 +10,19 @@ The implementation outline has been created. It defines how we will approach the
 You can also ask me to add more detail, code snippets, pseudo-code, or mermaid diagrams.
 
 
-You're already in a worktree (or workspace setup is disabled), so once you're happy with the approach we can go straight to implementation:
+You're already in a worktree (or workspace setup is disabled), so once you're happy with the approach, run one of these next steps in a new session:
 
-```text
-/rpi implement-outline <task-slug>
-```
+- **Detailed plan (optional):** write code-level changes for each phase before implementing.
+
+  ```text
+  /rpi create-plan <task-slug>
+  ```
+
+- **Implement:** start building from the outline.
+
+  ```text
+  /rpi implement-outline <task-slug>
+  ```
 
 ---
 

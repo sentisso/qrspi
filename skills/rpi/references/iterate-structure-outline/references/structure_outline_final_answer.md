@@ -10,11 +10,25 @@ The implementation outline has been created. It defines how we will approach the
 You can also ask me to add more detail, code snippets, pseudo-code, or mermaid diagrams.
 
 
-Once you're happy with the approach, you can set up a worktree by creating a new session with the following command: `/rpi setup-worktree <task-slug>`
+Once you're happy with the approach, run one of these next steps in a new session:
 
-```text
-/rpi setup-worktree <task-slug>
-```
+- **Detailed plan (optional):** write code-level changes for each phase before implementing.
+
+  ```text
+  /rpi create-plan <task-slug>
+  ```
+
+- **Worktree (optional):** set up an isolated worktree for the implementation.
+
+  ```text
+  /rpi setup-worktree <task-slug>
+  ```
+
+- **Implement:** start building from the outline in the current checkout.
+
+  ```text
+  /rpi implement-outline <task-slug>
+  ```
 
 ---
 
