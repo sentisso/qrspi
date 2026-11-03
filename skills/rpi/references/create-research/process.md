@@ -105,8 +105,8 @@ Then wait for the user's research query.
 
 8. **Link code references:**
    For code references (if on main or pushed):
-   - Get repo info: `gh repo view --json owner,name`
-   - Create permalinks: `https://github.com/{owner}/{repo}/blob/{commit}/{file}#L{line}`
+   - Find the tooling available for the repository's hosting service. Check the configured MCP servers and the project setup (remote URL, CLIs on `PATH`). Examples: `gh` for GitHub, `glab` for GitLab, the Azure DevOps MCP server. Without tooling, work from the remote URL.
+   - Create permalinks to `{file}` at `{commit}` and `{line}` in the hosting service's URL format.
 
 9. **Respond to the user according to the template**
    - Read `${CLAUDE_SKILL_DIR}/references/workflow.md` to select the next step for the chosen flow.
@@ -243,7 +243,7 @@ Pick the views that make each part of the story clearest:
 - Research documents should be self-contained with all necessary context
 - Each sub-agent prompt should be specific and focused on read-only documentation operations
 - Document cross-component connections and how systems interact
-- Link to GitHub when possible for permanent references
+- Link to the repo hosting service when possible for permanent references
 - Stay focused on synthesis, not deep file reading
 - Have sub-agents document examples and usage patterns as they exist
 - **REMEMBER**: Document and Ask about what IS and WHY, not what SHOULD BE

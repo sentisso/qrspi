@@ -210,3 +210,24 @@ Upstream has these bugs. Drop each fix once upstream fixes it:
 - `implement-outline`: "You directly launch the `rpi:implementer-agent` subagent" becomes "You directly launch the `rpi:outline-implementer-agent` subagent".
 - `iterate-implementation`: the unstarted-phase bullet uses `rpi:implementer-agent` when a plan exists and `rpi:outline-implementer-agent` when no plan exists.
 - `create-structure-outline`: the document precedence becomes **structure outline > TDD > PRD > design discussion > research > ticket**, as in `iterate-structure-outline`.
+
+## Port Extensions
+
+These actions go beyond removing HumanLayer. They make the plugin work on any repository hosting service.
+
+### M8. Make repository hosting tool-agnostic (manual)
+
+Upstream drives GitHub through the `gh` CLI. The port names each operation in neutral words and lets the agent find the tooling:
+
+- `describe-pr` step 2 and `create-research` step 8 start with: "Find the tooling available for the repository's hosting service. Check the configured MCP servers and the project setup (remote URL, CLIs on `PATH`, CI config). Examples: `gh` for GitHub, `glab` for GitLab, the Azure DevOps MCP server." `describe-pr` adds: "Use whichever is available and signed in for every pull request and CI operation below." `create-research` leaves out "CI config" and adds: "Without tooling, work from the remote URL."
+- `describe-pr`: "If `gh` is missing or signed out, stop and tell the user" becomes a fallback: write and save the description, tell the user which steps to do by hand (create the PR, paste the description, check CI), and skip the CI watch.
+- `describe-pr`: each `gh` command becomes the operation it performs: find the PR for the current branch, collect PR metadata and changed files, set the PR description from `{output-path}`, check the PR for merge conflicts, check CI status, read the failed run's logs, rerun the failed jobs once. `mergeable` values become "hasn't computed mergeability yet" and "has conflicts". `gh pr checks --watch --fail-fast` becomes "wait for them and stop waiting at the first failure", using the tooling's watch mode if it has one and otherwise checking every 2 minutes. Plain `git` commands stay.
+- `create-research` step 8: `gh repo view` and the `github.com` URL become "Create permalinks to `{file}` at `{commit}` and `{line}` in the hosting service's URL format."
+- `create-research` and `iterate-research`: "Link to GitHub" becomes "Link to the hosting service".
+- `describe-pr/scripts/inject-walkthrough-diffs.sh`: delete the `--pr` option and its `gh pr diff` branch, keep `git diff`, and shorten the `usage()` line range to the new header. In `pr_walkthrough_example.html`, "`gh pr diff`" becomes "`git diff`".
+
+This check prints nothing when the rewrite is complete:
+
+```bash
+grep -rnE '\bgh (pr|run|repo|api)\b|github\.com/\{|GitHub PR|Link to GitHub' skills agents --exclude=pr_walkthrough_example.html
+```

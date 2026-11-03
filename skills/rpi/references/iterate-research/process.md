@@ -192,7 +192,7 @@ npm install example
 - Research documents should be self-contained with all necessary context
 - Each sub-agent prompt should be specific and focused on read-only documentation operations
 - Document cross-component connections and how systems interact
-- Link to GitHub when possible for permanent references
+- Link to the hosting service when possible for permanent references
 - Stay focused on synthesis, not deep file reading
 - Have sub-agents document examples and usage patterns as they exist
 - **REMEMBER**: Document and Ask about what IS and WHY, not what SHOULD BE

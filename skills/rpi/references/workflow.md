@@ -29,7 +29,7 @@ The user can start at any step. After research or any design step, they can skip
 | TDD | System design, then program design | The user approves each design separately |
 | Structure outline | Ordered vertical phases, each with a testable result and checks | The user reviews the scope and phase order |
 | Implementation | Code, tests, and a commit per phase | The user confirms manual checks before the next phase |
-| PR | GitHub PR with description and optional walkthrough | The user reviews the code |
+| PR | Pull request with description and optional walkthrough | The user reviews the code |
 
 ## Next Step
 

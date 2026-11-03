@@ -24,7 +24,7 @@
     Append R{line} to target a specific right-side (new) line, L{line} for left.
     Body HTML can use the same URLs in plain <a target="_blank"> links.
   - File nodes ALSO inline the real diff: a node sets `diffFile: "path/to/x.ts"`
-    and the raw `gh pr diff` hunk for that file is pasted into a matching
+    and the raw `git diff` hunk for that file is pasted into a matching
     <script type="text/plain" data-diff="path/to/x.ts"> tag in the #diffs stash
     near the bottom of <body>. The renderer reads it and colorizes it into a
     collapsible "Full diff" block inside the open node, so the change is
@@ -254,7 +254,7 @@
 
 <!-- ════════ DIFF STASH ════════
   Holds one <script type="text/plain" data-diff="<path>"> per file node with that
-  file's raw `gh pr diff` hunk; the renderer looks these up by the node's
+  file's raw `git diff` hunk; the renderer looks these up by the node's
   `diffFile`. DO NOT hand-fill this. Write it EXACTLY as the empty two-line div
   below, then run scripts/inject-walkthrough-diffs.sh — it reads every diffFile:
   path out of the NODES and writes the blocks for you.
@@ -291,7 +291,7 @@
    - diff:     GitHub PR file-diff permalink; renders a "diff ↗" pill next to the
                title. PR + "/files#diff-" + sha256(file_path), + "R{line}" optional
    - diffFile: a file path that matches a <script type="text/plain" data-diff="…">
-               tag in the #diffs stash holding that file's raw `gh pr diff` hunk.
+               tag in the #diffs stash holding that file's raw `git diff` hunk.
                EVERY file node (new/rewritten/modified/deleted) should set it.
                Rendered as a collapsible, color-coded "Full diff" block INSIDE
                the open node so reviewers read the change in place. See the

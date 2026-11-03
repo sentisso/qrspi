@@ -9,7 +9,7 @@
 #     </div>
 #
 # This script then reads every `diffFile:` path out of the NODES, pulls each file's
-# raw hunk from `git diff` (or `gh pr diff`), and rewrites the stash so each path
+# raw hunk from `git diff`, and rewrites the stash so each path
 # gets a `<script type="text/plain" data-diff="<path>">…</script>` block — flush-left,
 # with any literal `</script>` rewritten as `<\/script>` so the renderer restores it.
 #
@@ -24,12 +24,11 @@
 #   inject-walkthrough-diffs.sh <target.html> [base-dir] [options]
 #
 #   <target.html>     the walkthrough file to rewrite (edited in place)
-#   [base-dir]        directory to run git/gh in — use this when the walkthrough
+#   [base-dir]        directory to run git in — use this when the walkthrough
 #                     lives in dir1 but the diff comes from ../dir2 (default: .)
 #
 # Options:
 #   --base-dir DIR    same as the positional base-dir
-#   --pr NUMBER       source the diff from `gh pr diff NUMBER` instead of git
 #   --range REV       git revision range (default: main...HEAD)
 #   --max-lines N     truncate any single file's hunk to N lines + an elision note
 #                     (default: 0 = unlimited; use for lockfile-style files)
@@ -37,22 +36,19 @@
 #
 # Examples:
 #   inject-walkthrough-diffs.sh pr-walkthrough.html --range main...HEAD
-#   inject-walkthrough-diffs.sh pr-1527-walkthrough.html /tmp/pr1527 --pr 1527
 #   inject-walkthrough-diffs.sh ../task/pr-walkthrough.html ../../humanlayer --range upstream/main...HEAD
 set -euo pipefail
 
-usage() { sed -n '2,46p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,39p' "$0" | sed 's/^# \{0,1\}//'; }
 
 TARGET=""
 BASE_DIR="."
-PR=""
 RANGE=""
 MAX_LINES=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --base-dir) BASE_DIR="$2"; shift 2 ;;
-    --pr)       PR="$2";       shift 2 ;;
     --range)    RANGE="$2";    shift 2 ;;
     --max-lines) MAX_LINES="$2"; shift 2 ;;
     -h|--help)  usage; exit 0 ;;
@@ -88,11 +84,7 @@ if [ ! -s "$WANTED" ]; then
 fi
 
 # 2. Pull the unified diff once, in the base dir.
-if [ -n "$PR" ]; then
-  ( cd "$BASE_DIR" && gh pr diff "$PR" ) > "$RAWDIFF"
-else
-  ( cd "$BASE_DIR" && git diff "${RANGE:-main...HEAD}" ) > "$RAWDIFF"
-fi
+( cd "$BASE_DIR" && git diff "${RANGE:-main...HEAD}" ) > "$RAWDIFF"
 
 # 3. Split the diff per file; emit a stash <script> block for each wanted path.
 #    - key on the new-side path (`b/…`) from the `diff --git` header

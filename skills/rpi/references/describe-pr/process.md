@@ -14,8 +14,9 @@ Create or update the pull request for the current task with a concise descriptio
    Read `${CLAUDE_SKILL_DIR}/references/describe-pr/references/pr_description_template.md`
 
 2. Identify or create the pull request:
-   - If `gh` is missing or signed out, stop and tell the user. Do not work around it.
-   - Check the current branch for a PR with `gh pr view --json url,number,title,state,baseRefName,headRefName 2>/dev/null`.
+   - Find the tooling available for the repository's hosting service. Check the configured MCP servers and the project setup (remote URL, CLIs on `PATH`, CI config). Examples: `gh` for GitHub, `glab` for GitLab, the Azure DevOps MCP server. Use whichever is available and signed in for every pull request and CI operation below.
+   - If no tooling is available, still write and save the description (steps 3-5), then tell the user which steps to do by hand: create the PR, paste the description from the saved file and check CI. Skip step 7.
+   - Find the PR for the current branch, with its URL, number, title, state, base branch and head branch.
    - If no PR exists, inspect `git status --short --branch` and the commits on the current branch.
    - Commit task-related changes when needed, push the branch with an upstream, and create a PR for it. Follow the repository's git safety protocol.
    - Ask the user to select a PR only when the current branch has no relevant work and there is no safe current-branch PR to create.
@@ -23,7 +24,7 @@ Create or update the pull request for the current task with a concise descriptio
 3. Gather only the context needed to explain the change:
    - Read the ticket and any relevant task artifacts.
    - Read the complete PR diff and enough surrounding code to understand behavior and ownership.
-   - Use `gh pr view` to collect PR metadata and changed files.
+   - Collect the PR metadata and changed files.
    - Read `${CLAUDE_SKILL_DIR}/references/show-me.md` for the visual-outline conventions used in the PR body.
 
 4. Write the PR description using the template:
@@ -41,7 +42,7 @@ Create or update the pull request for the current task with a concise descriptio
 
 5. Save and publish the description:
    - Use `.rpi/tasks/{task-slug}/pr-description.md` when the task directory exists; otherwise use `.rpi/tasks/pr-{number}/description.md`.
-   - Update the PR with `gh pr edit {number} --body-file {output-path}`.
+   - Set the PR description from `{output-path}`.
    - Confirm the update succeeded.
 
 6. Report completion:
@@ -51,19 +52,19 @@ Create or update the pull request for the current task with a concise descriptio
 
 7. Watch CI until it passes:
    - Wait 5 minutes so checks can start: `sleep 300` (set the Bash timeout above 300000 ms).
-   - Check for merge conflicts with `gh pr view {number} --json mergeable,mergeStateStatus`. If `mergeable` is `UNKNOWN`, wait 30 seconds and ask again.
-   - When `mergeable` is `CONFLICTING`:
+   - Check the PR for merge conflicts. If the hosting service hasn't computed mergeability yet, wait 30 seconds and ask again.
+   - When the PR has conflicts:
      - Do not merge, rebase, or edit any files to resolve the conflicts.
      - Fetch the base branch from the base repo's remote (`git fetch {remote} {baseRefName}`) and list the conflicting files with `git merge-tree --write-tree --name-only HEAD {remote}/{baseRefName}`.
      - For each conflicting file, compare both sides (`git log --oneline HEAD...{remote}/{baseRefName} -- {file}` and the diffs) to learn what each side changed.
      - Offer the user a merge plan: which base commits conflict, how to resolve each file (keep ours, keep theirs, or combine, and why), and the checks to run after merging.
      - Stop and wait for the user to approve the plan. Do not watch CI while the PR has conflicts, since many checks will not run until they are fixed.
-   - Check status with `gh pr checks {number}`. If it reports no checks yet, wait another 2 minutes and check again, at most 3 times. If there are still no checks, tell the user and stop.
-   - While checks are pending, watch them with `gh pr checks {number} --watch --fail-fast` (Bash timeout 600000 ms). If the command times out, run it again.
+   - Check the PR's CI status. If it reports no checks yet, wait another 2 minutes and check again, at most 3 times. If there are still no checks, tell the user and stop.
+   - While checks are pending, wait for them and stop waiting at the first failure. Use the tooling's watch mode if it has one (Bash timeout 600000 ms, run it again on timeout); otherwise check every 2 minutes.
    - When a check fails:
-     - Read the failed run's logs with `gh run view {run-id} --log-failed` and find the cause.
+     - Read the failed run's logs and find the cause.
      - If the failure comes from this PR's changes, fix it, run the matching local check, commit, push, and go back to watching.
-     - If the failure is flaky or unrelated to this PR, rerun it once with `gh run rerun {run-id} --failed`. If it fails again, stop and tell the user what failed and why.
+     - If the failure is flaky or unrelated to this PR, rerun the failed jobs once. If it fails again, stop and tell the user what failed and why.
      - Stop and ask the user after 3 fix attempts on the same check.
    - When all checks pass, send a short final message that says so, with the PR URL.
 
