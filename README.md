@@ -2,13 +2,40 @@
 
 HumanLayer's Research-Plan-Implement (RPI) Claude Code plugin, ported to run without the HumanLayer platform. One `/rpi` skill walks a task from research questions through research, design, an implementation outline, implementation and a pull request. Each phase writes a document to `.rpi/tasks/<task-slug>/` and runs in its own session.
 
-## Usage
+## Installation
 
-Load the plugin for a session:
+### Claude Code
+
+Install from GitHub:
+
+```text
+/plugin marketplace add sentisso/qrspi
+/plugin install riptide-rpi@humanlayer-riptide-rpi
+```
+
+Or load a local checkout for one session:
 
 ```bash
 claude --plugin-dir /path/to/qrspi
 ```
+
+### pi
+
+Install it as a [pi](https://pi.dev) package. The subagents need the [pi-subagents](https://github.com/tintinweb/pi-subagents) extension, which only reads agents from installed packages, so `pi -e` won't load them.
+
+Install from GitHub. Add `@<tag-or-commit>` to pin a version:
+
+```bash
+pi install git:github.com/sentisso/qrspi
+```
+
+Or install a local checkout:
+
+```bash
+pi install /path/to/qrspi
+```
+
+## Usage
 
 Start a task with a description. The skill asks which flow to use. It then writes the research questions, or for a small `oneshot` task it offers a worktree or implementation straight from the ticket:
 

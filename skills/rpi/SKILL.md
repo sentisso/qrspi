@@ -9,7 +9,7 @@ argument-hint: "[step] [task-slug] [request or feedback]"
 
 Help the user research a change, work through its design, and implement it. Follow their requested step, using the phase instructions below.
 
-Paths in the phase instructions start with the CLAUDE_SKILL_DIR variable, which is this skill's directory: `${CLAUDE_SKILL_DIR}`. "The task artifact directory from your system prompt", `TASKNAME`, `TASKSLUG`, `<task slug>`, and `ENG-XXXX-description` mean the task directory selected under "Use the Task Directory".
+Paths in the phase instructions start with the CLAUDE_SKILL_DIR variable, which is this skill's directory: `${CLAUDE_SKILL_DIR}`. If the variable appears unsubstituted, use the directory that contains this `SKILL.md`. "The task artifact directory from your system prompt", `TASKNAME`, `TASKSLUG`, `<task slug>`, and `ENG-XXXX-description` mean the task directory selected under "Use the Task Directory".
 
 ## Choose the Step
 
@@ -85,13 +85,13 @@ The ticket has been saved to `.rpi/tasks/<task-slug>/ticket.md`. Run one of thes
 
 ## Suggest the Next Step
 
-Use the phase's final-answer template and `${CLAUDE_SKILL_DIR}/references/workflow.md` to choose what comes next. Users run each phase in a separate context window. When suggesting a next command, include the task slug, and the chosen flow for commands up to `create-structure-outline`. `setup-worktree` and the implement steps choose their route from the task's documents and take no flow. Say it's recommended to run it in a new session.
+Use the phase's final-answer template and `${CLAUDE_SKILL_DIR}/references/workflow.md` to choose what comes next. Users run each phase in a separate context window. When suggesting a next command, include the task slug, and the chosen flow for commands up to `create-structure-outline`. `setup-worktree` and the implement steps choose their route from the task's documents and take no flow. Say it's recommended to run it in a new session. When this skill was loaded with `/skill:rpi`, write every suggested `/rpi` command as `/skill:rpi`.
 
 Use artifact filenames to locate the current phase when asked what's next, then read its document for unfinished work and settled choices. Tell `research-questions` files apart from `research` files. Recognize `prd` or `product-requirements`, `tdd` or `tech-design`, `structure-outline` or `outline`, and `plan`. A structure outline or plan whose phases are not all marked `✅` means implementation is unfinished. A task directory with only `ticket.md` is either a `oneshot` task or a task that has not started. Check the branch for implementation commits to tell them apart.
 
 ## Use Subagents
 
-Use the bundled agent instructions for `codebase-analyzer`, `codebase-locator`, `codebase-pattern-finder`, `implementation-reviewer`, `implementer-agent`, `oneshot-implementer-agent`, `outline-implementer-agent`, and `web-search-researcher` as directed by each phase.
+Use the bundled agent instructions for `codebase-analyzer`, `codebase-locator`, `codebase-pattern-finder`, `implementation-reviewer`, `implementer-agent`, `oneshot-implementer-agent`, `outline-implementer-agent`, and `web-search-researcher` as directed by each phase. When the available subagent types have no `rpi:` namespace, call `rpi:<agent>` as `<agent>`.
 
 <important if="you have a tool for running subagents or delegated sessions, but the named subagents are not available">
   read the subagent instructions from `${CLAUDE_SKILL_DIR}/references/agents/<agent-name>.md` and pass them into the subagent with your main prompt, with

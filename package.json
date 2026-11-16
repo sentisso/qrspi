@@ -1,0 +1,14 @@
+{
+	"name": "rpi",
+	"version": "0.50.0",
+	"description": "Research-Plan-Implement workflow, ported from HumanLayer's RPI plugin.",
+	"license": "Apache-2.0",
+	"private": true,
+	"keywords": ["pi-package"],
+	"pi": {
+		"skills": ["./skills"],
+		"subagents": {
+			"agents": ["./agents"]
+		}
+	}
+}
